@@ -1,3 +1,12 @@
-mat-grid-tile {
-  background: lightblue;
+@import '../scss/common';
+.outer{
+  background: $bg;
+  box-shadow: inset 0px 0px 15px 4px rgba($w, .2);
+}
+::ng-deep .mat-grid-tile .mat-figure {
+  display: block!important;
+}
+mat-grid-tile{
+  border: 1px solid salmon;
+  // h1{ @extend %cp; }
 }

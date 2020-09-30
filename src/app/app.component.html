@@ -1,4 +1,13 @@
-<p>What now?</p>
-<p>This is angular</p>
-<p>This is angular hello</p>
-<mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+<div class="outer">
+  <mat-grid-list cols="5" rowHeight="100vh">
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <h1>Image Gallery List</h1>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1">
+      <app-three-scene></app-three-scene>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <h1>Image Gallery List</h1>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
