@@ -1,6 +1,7 @@
 @import '../scss/common';
 .outer{
   background: $bg;
+  // background: lightpink;
   box-shadow: inset 0px 0px 15px 4px rgba($w, .2);
 }
 ::ng-deep .mat-grid-tile .mat-figure {
