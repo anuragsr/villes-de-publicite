@@ -5,9 +5,18 @@
     <title>Villes De Annotations</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+      #ctn-css3D{ display: none; }
+      .canvas-webGL, .canvas-css3D{ 
+        position: absolute;
+        top: 0; left: 0;
+      }
+      .canvas-webGL{ z-index: 1; }
+      .canvas-css3D{ z-index: 0; }
+    </style>
   </head>
   <body class="mat-typography">
     <app-root></app-root>
