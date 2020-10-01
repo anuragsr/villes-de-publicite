@@ -1,0 +1,11 @@
+@import '../../scss/common';
+.ctn-carousel{
+  padding: 10px;
+  .carousel-item{
+    @extend %j-c;
+    color: $bg;
+    height: 250px;
+    background: salmon;
+    margin-bottom: 10px;
+  }
+}

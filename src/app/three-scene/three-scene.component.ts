@@ -107,8 +107,8 @@ export class ThreeSceneComponent implements OnInit {
     // Initialize the scene
     this.initScene()
     // Uncomment below 2 lines for testing
-    show = true
-    this.initGUI()
+    // show = true
+    // this.initGUI()
     this.toggleHelpers(show)
     this.addListeners()
     this.resize()
@@ -135,9 +135,6 @@ export class ThreeSceneComponent implements OnInit {
     scene.add(orbitCamera)
 
     camera.position.set(200, 150, 200)
-    // camera.position.y = 300
-    // camera.position.z = 300
-    // camera.rotation.x = -Math.PI / 2
     camera.lookAt(origin)
     scene.add(camera)
 
@@ -237,7 +234,7 @@ export class ThreeSceneComponent implements OnInit {
   }
 
   introduce(obj){
-    const { scene } = this, total = 4
+    const { scene } = this, total = 6
     scene.add(obj)
     this.count++
     
@@ -262,13 +259,12 @@ export class ThreeSceneComponent implements OnInit {
   }
 
   addObjects(){
-    const { scene, renderer, createMesh } = this
+    const { scene, createMesh } = this
     , obj = new OBJLoader()
     , mtl = new MTLLoader()
     , tex = new THREE.TextureLoader()
     , addMesh = () => {
       const geometry = new THREE.BoxGeometry(50, 50, 50);
-      // const material = new THREE.MeshBasicMaterial({color: 0xf0d203, wireframe: true});
       const material = new THREE.MeshNormalMaterial();
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.z = -100
@@ -280,31 +276,6 @@ export class ThreeSceneComponent implements OnInit {
       })
     }
     , addBg = () => {
-      
-      // Cubemap
-      // const path = 'assets/textures/skybox2_'
-      // , format = '.jpg'
-      // , urls = [
-      //   path + 'px' + format, path + 'nx' + format,
-      //   path + 'py' + format, path + 'ny' + format,
-      //   path + 'pz' + format, path + 'nz' + format
-      // ]
-      // const reflectionCube = new THREE.CubeTextureLoader().load( urls )
-      // scene.background = reflectionCube
-
-      // Equirect
-      // const texture = tex.load(
-      //   'assets/textures/sunset.jpeg',
-      //   () => {
-      //     const rt = new THREE.WebGLCubeRenderTarget(texture.image.height);
-      //     rt.fromEquirectangularTexture(renderer, texture);
-      //     scene.background = rt;
-      //   });
-
-      // tex.load('assets/textures/infinitemirrorspace_spherical.jpg', sph => {
-      // tex.load('assets/textures/spherical.jpg', sph => {
-      // tex.load('assets/textures/stolanuten.jpg', sph => {
-        
       tex.load('assets/textures/sunset.jpeg', sph => {
         const bg = createMesh(
           new THREE.SphereBufferGeometry(500, 50, 50),
@@ -320,13 +291,7 @@ export class ThreeSceneComponent implements OnInit {
       tex.load('assets/textures/road2.jpg', road => {
         const floor = createMesh(
           new THREE.CircleGeometry( 500, 64 ),
-          new THREE.MeshPhongMaterial({ 
-            // color: 0x000000,
-            // color: 0xffffff,
-            map: road, 
-            // bumpMap: floorBump, 
-            // bumpScale: .1
-          }),
+          new THREE.MeshPhongMaterial({ map: road }),
           {
             minFilter: THREE.LinearFilter,
             wrapping: THREE.MirroredRepeatWrapping,
@@ -363,9 +328,6 @@ export class ThreeSceneComponent implements OnInit {
         color: 0x000000, transparent: true, opacity: 0,
         blending: THREE.NoBlending
       });
-      // material.color.set('black')
-      // material.opacity   = 0;
-      // material.blending  = ;
 
       var geometry = new THREE.PlaneGeometry();
       var planeMesh= new THREE.Mesh( geometry, material );

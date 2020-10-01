@@ -2,12 +2,25 @@
 .outer{
   background: $bg;
   // background: lightpink;
-  box-shadow: inset 0px 0px 15px 4px rgba($w, .2);
+  // box-shadow: inset 0px 0px 15px 4px rgba($b, .5);
 }
+
 ::ng-deep .mat-grid-tile .mat-figure {
   display: block!important;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
+::ng-deep .mat-grid-tile .mat-figure::-webkit-scrollbar{
+  height: 4px; width: 4px;
+}
+::ng-deep .mat-grid-tile .mat-figure::-webkit-scrollbar-thumb {
+  background: rgba($w, .26);
+}
+::ng-deep .mat-grid-tile.ctn-three-outer .mat-figure {
+  overflow: hidden;
+}
+
 mat-grid-tile{
-  border: 1px solid salmon;
+  // border: 1px solid salmon;
   // h1{ @extend %cp; }
 }

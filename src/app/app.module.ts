@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core'
 import { AppComponent } from './app.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatGridListModule } from '@angular/material/grid-list';
-import { ThreeSceneComponent } from './three-scene/three-scene.component'
+import { ThreeSceneComponent } from './three-scene/three-scene.component';
+import { CarouselParentComponent } from './carousel-parent/carousel-parent.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    ThreeSceneComponent
+    ThreeSceneComponent,
+    CarouselParentComponent
   ],
   imports: [
     BrowserModule,

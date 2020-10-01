@@ -1,13 +1,13 @@
 <div class="outer">
-  <mat-grid-list cols="5" rowHeight="100vh">
+  <mat-grid-list cols="6" rowHeight="100vh">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <h1>Image Gallery List</h1>
+      <app-carousel-parent [carousels]="carouselsLeft"></app-carousel-parent>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="3" [rowspan]="1">
+    <mat-grid-tile [colspan]="4" [rowspan]="1" class="ctn-three-outer">
       <app-three-scene></app-three-scene>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" [rowspan]="1">
-      <h1>Image Gallery List</h1>
+      <app-carousel-parent [carousels]="carouselsRight"></app-carousel-parent>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
