@@ -1,24 +1,23 @@
 import { Component } from '@angular/core'
-import { CarouselItem } from './carouselItem'
+import { HttpClient } from '@angular/common/http'
 import { l } from './helpers/common'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  carouselsLeft: CarouselItem[]
-  carouselsRight: CarouselItem[]
+  carouselsLeft: any[]
+  carouselsRight: any[]
 
-  constructor(){
-    this.carouselsLeft = [
-      { url: "img1.jpg" },
-      { url: "img2.jpg" }
-    ]
-    this.carouselsRight = [
-      { url: "img1.jpg" },
-      { url: "img2.jpg" }
-    ]
+  constructor(private http: HttpClient){
+    this.http
+    .get('assets/data/carousels.json')
+    .subscribe((data:any) => {
+      const { locations }  = data, len = locations.length
+      this.carouselsLeft = locations.slice(0, len / 2)
+      this.carouselsRight = locations.slice(len / 2, len)
+    })
   }
 }

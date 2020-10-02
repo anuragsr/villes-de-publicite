@@ -1,11 +1,34 @@
 @import '../../scss/common';
 .ctn-carousel{
   padding: 10px;
-  .carousel-item{
-    @extend %j-c;
-    color: $bg;
-    height: 250px;
-    background: salmon;
-    margin-bottom: 10px;
+  .carousel-single{
+    @extend %cp;
+    position: relative;
+    color: $w;
+    height: 12vw;
+    outline: 1px solid salmon;
+    margin-bottom: 20px;
+    &:last-of-type{
+      margin-bottom: 0px;
+    }
+    .title{ 
+      @include pa(0, 0);
+      @extend %fw;
+      z-index: 1;
+      background: rgba(0, 0, 0, .4);
+    }
+    .carousel,
+    .carousel-inner,
+    .carousel-item {
+      @extend %fh;
+    }
+    .carousel-inner .img-wrapper{
+      overflow: hidden;
+      @extend %fhw;
+    }
+    .carousel-caption{ 
+      padding: 0; bottom: 0; 
+      z-index: 1;
+    }
   }
 }

@@ -107,8 +107,8 @@ export class ThreeSceneComponent implements OnInit {
     // Initialize the scene
     this.initScene()
     // Uncomment below 2 lines for testing
-    // show = true
-    // this.initGUI()
+    show = true
+    this.initGUI()
     this.toggleHelpers(show)
     this.addListeners()
     this.resize()
@@ -406,7 +406,9 @@ export class ThreeSceneComponent implements OnInit {
       addBillboards()
     })()
   }
-  
+  showLocation(location){
+    l(location)
+  }
   // animate() {          
   //   // We have to run this outside angular zones,
   //   // because it could trigger heavy changeDetection cycles.

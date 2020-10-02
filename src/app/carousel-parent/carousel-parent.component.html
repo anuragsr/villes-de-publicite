@@ -1,9 +1,23 @@
 <div class="ctn-carousel">
-  <div class="carousel-item" *ngFor="let carousel of dummyCarousels; let i = index">
-    {{ i }}
+  <div 
+    class="carousel-single" 
+    *ngFor="let location of carousels" 
+    (click)="selectLocation(location)"
+    >
+    <div class="title">{{ location.name }}</div>
+    <ngb-carousel>
+      <ng-template ngbSlide *ngFor="let carouselSingle of location.images">
+        <div class="img-wrapper">
+          <img [src]="carouselSingle.url" alt="Random">
+        </div>
+        <div class="carousel-caption">
+          <h3>{{carouselSingle.title}}</h3>
+          <p>{{carouselSingle.subtitle}}</p>
+        </div>
+      </ng-template>
+    </ngb-carousel> 
   </div>
-  <!-- <h1>Image Gallery List From app-carousel-parent</h1>
-  <pre>
+  <!-- <pre>
     {{ carousels | json }}
   </pre> -->
 </div>

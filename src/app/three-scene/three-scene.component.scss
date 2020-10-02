@@ -1,6 +1,7 @@
 @import '../../scss/common';
 .ctn-three{ 
   @extend %fhw;
+  position: relative;
 }
 .css3d{ 
   @include pa(0, 0);  
