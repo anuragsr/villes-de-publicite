@@ -1,6 +1,6 @@
 @import '../scss/common';
 .outer{
-  background: $bg;
+  // background: $bg-l;
   // background: lightpink;
   // box-shadow: inset 0px 0px 15px 4px rgba($b, .5);
 }
@@ -14,7 +14,7 @@
   height: 4px; width: 4px;
 }
 ::ng-deep .mat-grid-tile .mat-figure::-webkit-scrollbar-thumb {
-  background: rgba($w, .26);
+  background: rgba($b, .26);
 }
 ::ng-deep .mat-grid-tile.ctn-three-outer .mat-figure {
   padding: 10px;

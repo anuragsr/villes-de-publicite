@@ -1,4 +1,5 @@
 $bg: #21252b;
+$bg-l: #e7e7e7;
 
 $w: #fff;
 $b: #000;
@@ -64,7 +65,7 @@ $breakpoints: (
 %j-f-e {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
 }
 // Position fixed mixin
 @mixin pf($top:"", $left:"", $bottom:"", $right:"", $unit: "px") {

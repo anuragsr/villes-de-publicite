@@ -9,6 +9,7 @@ import gsap from 'gsap'
 import * as dat from 'dat.gui'
 import Stats from 'stats.js'
 
+import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
 @Component({
@@ -42,8 +43,12 @@ export class ThreeSceneComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  constructor() {
+  constructor(private locationService: LocationService) {
     
+    this.locationService.locationSet$.subscribe(location => {
+      this.showLocation(location)
+    })
+
     // this.renderer.shadowMap.enabled = true
     // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
@@ -88,6 +93,7 @@ export class ThreeSceneComponent implements OnInit {
 
     this.stats = new Stats()
     document.body.appendChild(this.stats.dom)
+    this.stats.showPanel(-1)
 
     // this.enableInspector()
   }    
@@ -407,7 +413,23 @@ export class ThreeSceneComponent implements OnInit {
     })()
   }
   showLocation(location){
-    l(location)
+    // l(location, "From service")
+    this.currentCamera = this.camera
+    gsap.to(this.currentCamera.position, {
+      duration: 2, 
+      x: location.camPos[0],
+      y: location.camPos[1],
+      z: location.camPos[2],
+      onUpdate:() =>{
+        this.currentCamera.lookAt(
+          new THREE.Vector3(
+            location.xyzPos[0],
+            location.xyzPos[1],
+            location.xyzPos[2],
+          )
+        )
+      }
+    })
   }
   // animate() {          
   //   // We have to run this outside angular zones,

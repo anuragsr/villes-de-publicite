@@ -1,7 +1,7 @@
 {
    "locations":   [
       {
-         "name": "City Centre",
+         "name": "Centre Ville", "nameEn": "City Centre",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -29,7 +29,7 @@
          ]
       },
       {
-         "name": "Downtown",
+         "name": "Zone Industrielle", "nameEn": "Industrial District",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -57,7 +57,7 @@
          ]
       },
       {
-         "name": "City Centre 2",
+         "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -85,7 +85,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -113,7 +113,7 @@
          ]
       },
       {
-         "name": "City Centre 2",
+         "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -141,7 +141,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -169,7 +169,7 @@
          ]
       },
       {
-         "name": "City Centre 2",
+         "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -197,7 +197,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -225,7 +225,7 @@
          ]
       },
       {
-         "name": "City Centre 2",
+         "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -253,7 +253,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -281,7 +281,7 @@
          ]
       },
       {
-         "name": "City Centre 2",
+         "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
          "xyzPos": [0, 0, 0],
          "camPos": [100, 100, 100],
@@ -309,7 +309,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],
@@ -337,7 +337,7 @@
          ]
       },
       {
-         "name": "Downtown 2",
+         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
          "xyzPos": [0, 0, 0],
          "camPos": [200, 100, -100],

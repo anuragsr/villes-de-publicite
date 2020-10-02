@@ -2,6 +2,7 @@
 .ctn-three{ 
   @extend %fhw;
   position: relative;
+  box-shadow: 0px 0px 5px 0px rgba($b, .4);
 }
 .css3d{ 
   @include pa(0, 0);  

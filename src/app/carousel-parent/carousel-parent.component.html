@@ -1,22 +1,42 @@
 <div class="ctn-carousel">
-  <div 
-    class="carousel-single" 
-    *ngFor="let location of carousels" 
-    (click)="selectLocation(location)"
+  <div class="carousel-single" 
+    *ngFor="let location of carousels"        
     >
-    <div class="title">{{ location.name }}</div>
-    <ngb-carousel>
-      <ng-template ngbSlide *ngFor="let carouselSingle of location.images">
-        <div class="img-wrapper">
-          <img [src]="carouselSingle.url" alt="Random">
-        </div>
-        <div class="carousel-caption">
-          <h3>{{carouselSingle.title}}</h3>
-          <p>{{carouselSingle.subtitle}}</p>
-        </div>
-      </ng-template>
-    </ngb-carousel> 
+    <div class="overlay">
+      <div class="ctn-chip">
+        <mat-chip-list>
+          <mat-chip>
+            <div>{{ location.name }}</div>
+            <div class="tr">{{ location.nameEn }}</div>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <button 
+        mat-fab color="warn"
+        matTooltip="Galerie | Gallery"
+        >
+        <mat-icon>collections</mat-icon><br/>
+      </button>
+      <button 
+        mat-fab color="primary" 
+        matTooltip="Naviguer | Navigate"
+        (click)="selectLocation(location)"
+        >
+        <mat-icon>near_me</mat-icon><br/>
+      </button>
+    </div>
+    <div class="ctn-img">
+      <img [src]="location.images[0].url" alt="Random">
+    </div>
   </div>
+  <!-- <ngb-carousel>
+    <ng-template ngbSlide *ngFor="let carouselSingle of location.images">
+      <div class="carousel-caption">
+        <h3>{{carouselSingle.title}}</h3>
+        <p>{{carouselSingle.subtitle}}</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>  -->
   <!-- <pre>
     {{ carousels | json }}
   </pre> -->

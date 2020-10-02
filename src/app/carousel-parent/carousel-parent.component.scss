@@ -1,34 +1,67 @@
 @import '../../scss/common';
+.mat-tooltip { font-size: 12px; }
+.tr{ 
+  font-size: 12px; font-style: italic;
+  font-weight: 100;
+}
 .ctn-carousel{
   padding: 10px;
   .carousel-single{
-    @extend %cp;
+    // @extend %cp;
     position: relative;
     color: $w;
     height: 12vw;
-    outline: 1px solid salmon;
     margin-bottom: 20px;
+    // outline: 1px solid salmon;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .4);
     &:last-of-type{
       margin-bottom: 0px;
     }
-    .title{ 
+    .ctn-chip{
+      @include pa(10, 10);
+      z-index: 2;
+      .mat-standard-chip{ 
+        height: auto; 
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    .overlay{ 
       @include pa(0, 0);
-      @extend %fw;
-      z-index: 1;
-      background: rgba(0, 0, 0, .4);
-    }
-    .carousel,
-    .carousel-inner,
-    .carousel-item {
-      @extend %fh;
-    }
-    .carousel-inner .img-wrapper{
-      overflow: hidden;
       @extend %fhw;
-    }
-    .carousel-caption{ 
-      padding: 0; bottom: 0; 
+      @extend %oh;
+      @extend %j-c;      
       z-index: 1;
+      background: rgba($b, 0);
+      transition: background .7s;
+      button{
+        transform: translateY(270%);
+        transition: transform .4s ease-out;
+        &:last-of-type{ 
+          margin-left: 25px; 
+          transition-delay: .1s;
+        }
+      }
+      &:hover, &.active{
+        background: rgba($b, .6);
+        button{
+          transform: translateY(50%);
+        }
+        +.ctn-img img{
+          transform: translateX(-5%);
+        }
+      }
+    }
+    .ctn-img{
+      @extend %fhw;
+      @extend %oh;
+      img{
+        transition: transform .4s ease-out;
+        transform: translateX(0%);
+      }
+    }
+    .mat-button-wrapper{
+      font-size: 16px;
     }
   }
 }
