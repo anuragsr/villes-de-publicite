@@ -9,16 +9,23 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatChipsModule } from '@angular/material/chips'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field'
+import { MatCarouselModule } from '@ngbmodule/material-carousel'
 
 import { ThreeSceneComponent } from './three-scene/three-scene.component'
-import { CarouselParentComponent } from './carousel-parent/carousel-parent.component'
+import { LocationComponent } from './locations/location.component'
+import { DialogComponent, DialogCarouselContent } from './dialog/dialog.component'
+import { CarouselComponent } from './carousel/carousel.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     ThreeSceneComponent,
-    CarouselParentComponent
+    LocationComponent,
+    DialogCarouselContent,
+    DialogComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,
@@ -29,9 +36,12 @@ import { CarouselParentComponent } from './carousel-parent/carousel-parent.compo
     MatIconModule,
     MatTooltipModule,
     MatChipsModule,
-    NgbModule
+    MatDialogModule,
+    MatCarouselModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

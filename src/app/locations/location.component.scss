@@ -27,16 +27,20 @@
       }
     }
     .overlay{ 
-      @include pa(0, 0);
+      // @include pa(0, 0);
+      // z-index: 1;
       @extend %fhw;
       @extend %oh;
-      @extend %j-c;      
-      z-index: 1;
+      @extend %j-c;
+      position: relative; 
       background: rgba($b, 0);
       transition: background .7s;
       button{
-        transform: translateY(270%);
-        transition: transform .4s ease-out;
+        position: relative;
+        top: 1vw;
+        opacity: 0;
+        transform: scale(0);
+        transition: all .25s ease-out;
         &:last-of-type{ 
           margin-left: 25px; 
           transition-delay: .1s;
@@ -45,7 +49,8 @@
       &:hover, &.active{
         background: rgba($b, .6);
         button{
-          transform: translateY(50%);
+          opacity: 1;
+          transform: scale(1);
         }
         +.ctn-img img{
           transform: translateX(-5%);
@@ -55,6 +60,8 @@
     .ctn-img{
       @extend %fhw;
       @extend %oh;
+      @include pa(0, 0);
+      z-index: -1;
       img{
         transition: transform .4s ease-out;
         transform: translateX(0%);

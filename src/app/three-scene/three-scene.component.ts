@@ -12,6 +12,8 @@ import Stats from 'stats.js'
 import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
+interface Location { type: string }
+
 @Component({
   selector: 'app-three-scene',
   templateUrl: './three-scene.component.html',
@@ -45,10 +47,9 @@ export class ThreeSceneComponent implements OnInit {
 
   constructor(private locationService: LocationService) {
     
-    this.locationService.locationSet$.subscribe(location => {
-      this.showLocation(location)
+    this.locationService.locationSet$.subscribe((location:Location) => {
+      if(location.type === "map") this.showLocation(location)
     })
-
     // this.renderer.shadowMap.enabled = true
     // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 

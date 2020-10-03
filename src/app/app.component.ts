@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { l } from './helpers/common'
 import { LocationService } from './services/location.service'
+import { l } from './helpers/common'
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ export class AppComponent {
     private locationService: LocationService
   ){
     this.http
-    .get('assets/data/carousels.json')
+    .get('assets/data/locations.json')
     .subscribe((data:any) => {
       const { locations }  = data, len = locations.length
       this.carouselsLeft = locations.slice(0, len / 2)
@@ -33,6 +33,6 @@ export class AppComponent {
   }
 
   broadcast() {
-    this.locationService.setLocation(this.location);
+    this.locationService.setLocation(this.location)
   }
 }

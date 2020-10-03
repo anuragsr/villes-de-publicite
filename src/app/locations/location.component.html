@@ -14,13 +14,16 @@
       <button 
         mat-fab color="warn"
         matTooltip="Galerie | Gallery"
+        [matTooltipShowDelay]="500"
+        (click)="selectLocation(location, 'gallery')"
         >
         <mat-icon>collections</mat-icon><br/>
       </button>
       <button 
         mat-fab color="primary" 
         matTooltip="Naviguer | Navigate"
-        (click)="selectLocation(location)"
+        [matTooltipShowDelay]="500"
+        (click)="selectLocation(location, 'map')"
         >
         <mat-icon>near_me</mat-icon><br/>
       </button>

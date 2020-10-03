@@ -1,0 +1,10 @@
+@import '../../scss/common';
+.mat-app-background {
+  width: 75vw;
+  .carousel-slide-content{ cursor: default; }
+  .slide-content{
+    @extend %fhw;
+    @extend %j-c;
+    flex-direction: column;
+  }
+}

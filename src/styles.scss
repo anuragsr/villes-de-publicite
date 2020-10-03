@@ -20,5 +20,3 @@ body {
 .desktop-only{
 	@include media('<=mob') { display: none; }
 }
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
