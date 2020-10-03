@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/renderers/CSS3DRenderer'
 
 import gsap from 'gsap'
@@ -79,12 +80,6 @@ export class ThreeSceneComponent implements OnInit {
     this.currentCamera = this.orbitCamera
 
     this.spotLight1 = new THREE.DirectionalLight(0xffffff, 1)
-    // this.spotLight1.castShadow = true
-    // //Set up shadow properties for the light
-    // this.spotLight1.shadow.mapSize.width = 512;  // default
-    // this.spotLight1.shadow.mapSize.height = 512; // default
-    // this.spotLight1.shadow.camera.near = 0.5;    // default
-    // this.spotLight1.shadow.camera.far = 500;     // default
 
     this.lightPos1 = new THREE.Vector3(500, 150, -500)
     this.spotLightMesh1 = new THREE.Mesh(
@@ -267,9 +262,11 @@ export class ThreeSceneComponent implements OnInit {
 
   addObjects(){
     const { scene, createMesh } = this
-    , obj = new OBJLoader()
-    , mtl = new MTLLoader()
-    , tex = new THREE.TextureLoader()
+    , mgr = new THREE.LoadingManager()
+    , obj = new OBJLoader(mgr)
+    , mtl = new MTLLoader(mgr)
+    , tex = new THREE.TextureLoader(mgr)
+    , gltf = new GLTFLoader(mgr)
     , addMesh = () => {
       const geometry = new THREE.BoxGeometry(50, 50, 50);
       const material = new THREE.MeshNormalMaterial();
@@ -402,15 +399,160 @@ export class ThreeSceneComponent implements OnInit {
       cssObject4.scale.multiplyScalar(.15)
       this.introduceCSS3D(cssObject4)
     }
+    , addBillboards2 = () => {
+      // gltf.load('assets/models/billboards/b1/scene.gltf', obj => { 
+      //   // l(obj)
+      //   const billboard1 = obj.scene 
+      //   billboard1.name = "Billboard 1"
+      //   billboard1.traverse(child => {
+      //     if(child.name === "Billboard_Mat_1"){
+      //       l(child)
+      //       (<any>child).material = new THREE.MeshPhongMaterial({
+      //         color: 0xffffff
+      //       })
+      //     }
+      //   })
+      //   // billboard1.position.z = -250
+      //   // router.scale.multiplyScalar(.03)
+      //   // router.rotation.set(0, Math.PI / 2 + .2, 0)
+      //   // router.position.set(-36.54, 27.6, -120)
+      //   this.introduce(billboard1)
+      // })
+      mtl.load("assets/models/billboards/b2-mod/untitled.mtl", materials => {
+        materials.preload()
+        new OBJLoader()
+        .setMaterials( materials )
+        .load( 'assets/models/billboards/b2-mod/untitled.obj', object => {
+          // const stool = object
+          // stool.name = "Stool"
+          // stool.children[0].castShadow = true
+          // stool.scale.multiplyScalar(.2)
+          // stool.rotation.set(-Math.PI / 2, 0, -Math.PI / 2)
+          // stool.position.set(120, 0, -70)
+          // this.introduce(stool)
+          const billGr1 = new THREE.Group()
+          billGr1.name = "Billboard Gr 1"
+          this.introduce(billGr1)
+          const billboard2 = object 
+          billboard2.name = "Billboard 2"
+          billboard2.scale.multiplyScalar(20)
+          billboard2.rotation.y = Math.PI 
+          billGr1.add(billboard2)
+          // this.introduce(billboard2)
+
+          var material = new THREE.MeshBasicMaterial({ 
+            transparent: true, 
+            // wireframe: true,
+            // color: 0xff0000, 
+            color: 0x000000, 
+            opacity: 0,
+            blending: THREE.NoBlending
+          });
+    
+          var geometry = new THREE.PlaneGeometry();
+          var planeMesh= new THREE.Mesh( geometry, material );
+          // add it to the WebGL scene
+          // planeMesh.scale.multiplyScalar(150)
+          planeMesh.name = "Banner 1"
+          planeMesh.scale.set(160, 65, 0)
+          // planeMesh.updateMatrix(); 
+          // planeMesh.geometry.applyMatrix4( planeMesh.matrix );
+          // planeMesh.matrix.identity();
+          // planeMesh.scale.set( 1, 1, 1 );
+          planeMesh.position.y = 148
+          planeMesh.position.z = 8
+          this.introduce(planeMesh)
+          billGr1.add(planeMesh)
+          l(planeMesh)
+          // planeMesh.position.z = 10
+
+          billGr1.position.x = 100
+          billGr1.rotation.y = Math.PI / 2
+          billGr1.scale.multiplyScalar(.5)
+          billGr1.updateMatrixWorld()
+
+          var targetPos = new THREE.Vector3(); 
+          var targetRot = new THREE.Vector3(); 
+          planeMesh.getWorldPosition( targetPos );
+          // planeMesh.getWorldRotation( targetRot );
+          l(targetPos, targetRot)
+          const cssObject = new CSS3DObject(document.getElementById("bill1"))
+          // cssObject.position.copy(planeMesh.position)
+          cssObject.position.copy(targetPos)
+          cssObject.position.x-= .25
+          cssObject.rotation.copy(billGr1.rotation)
+          cssObject.scale.multiplyScalar(.27*.5)
+          // cssObject.updateMatrix(); 
+          // cssObject.geometry.applyMatrix4( cssObject.matrix );
+          // cssObject.matrix.identity();
+          // cssObject.scale.set( 1, 1, 1 );
+          // l(cssObject.scale)
+          this.introduceCSS3D(cssObject)
+
+        })
+      })
+      // gltf.load('assets/models/billboards/b2-mod/scene.glb', obj => { 
+      //   // l(obj)
+      //   const billboard2 = obj.scene 
+      //   billboard2.name = "Billboard 2"
+      //   // billboard2.position.z = 250
+      //   billboard2.scale.multiplyScalar(20)
+      //   // router.rotation.set(0, Math.PI / 2 + .2, 0)
+      //   // router.position.set(-36.54, 27.6, -120)
+      //   this.introduce(billboard2)
+      // })
+
+      // gltf.load('assets/models/billboards/b3/scene.gltf', obj => { 
+      //   // l(obj)
+      //   const billboard3 = obj.scene 
+      //   billboard3.name = "Billboard 3"
+      //   // billboard3.position.z = 250
+      //   billboard3.scale.multiplyScalar(.75)
+      //   // router.rotation.set(0, Math.PI / 2 + .2, 0)
+      //   // router.position.set(-36.54, 27.6, -120)
+      //   this.introduce(billboard3)
+      // })
+
+      // gltf.load('assets/models/billboards/b4/scene.gltf', obj => { 
+      //   // l(obj)
+      //   const billboard4 = obj.scene 
+      //   billboard4.name = "Billboard 4"
+      //   billboard4.position.x = 250
+      //   billboard4.position.y = 150
+      //   billboard4.scale.multiplyScalar(.5)
+      //   // router.rotation.set(0, Math.PI / 2 + .2, 0)
+      //   // router.position.set(-36.54, 27.6, -120)
+      //   this.introduce(billboard4)
+      // })
+      
+      // gltf.load('assets/models/billboards/b5/scene.gltf', obj => { 
+      //   // l(obj)
+      //   const billboard5 = obj.scene 
+      //   billboard5.name = "Billboard 5"
+      //   billboard5.position.x = -250
+      //   // billboard4.position.y = 150
+      //   billboard5.scale.multiplyScalar(20)
+      //   // router.rotation.set(0, Math.PI / 2 + .2, 0)
+      //   // router.position.set(-36.54, 27.6, -120)
+      //   this.introduce(billboard5)
+      // })
+    }
+    
+    mgr.onError = url => {
+      l('There was an error loading ' + url)
+    }
+
     (() => {
       // Mesh for test
       // addMesh()
       // Background
       addBg()
       // City
-      addCity()
+      // addCity()
       // Billboard
-      addBillboards()
+      // addBillboards()
+      // Billboards roadside
+      addBillboards2()
     })()
   }
   showLocation(location){

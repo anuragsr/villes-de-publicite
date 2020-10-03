@@ -16,6 +16,6 @@ export class LocationComponent implements OnInit {
   selectLocation(location, type){
     // l(location)
     location.type = type
-    this.locationService.getLocation(location);
+    this.locationService.getLocation(location)
   }
 }
