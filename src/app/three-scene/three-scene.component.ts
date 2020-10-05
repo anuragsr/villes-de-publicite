@@ -14,6 +14,7 @@ import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
 interface Location { type: string }
+const posData = { x: 0, y: 0, z: 0, yRot : 0 }
 
 @Component({
   selector: 'app-three-scene',
@@ -35,7 +36,10 @@ export class ThreeSceneComponent implements OnInit {
   spotLight1: THREE.DirectionalLight
   lightPos1: THREE.Vector3
   spotLightMesh1: THREE.Mesh<THREE.SphereBufferGeometry, THREE.MeshPhongMaterial>
-    
+  mixer: THREE.AnimationMixer
+  currentMesh: THREE.Object3D
+
+  clock = new THREE.Clock()
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   scene = new THREE.Scene()
   rendererCSS = new CSS3DRenderer()
@@ -154,20 +158,23 @@ export class ThreeSceneComponent implements OnInit {
   
   initGUI(){
     const gui = new dat.GUI()
+    // , { currentMesh } = this
     , params =  {
       helpers: true
       , orbitCamera: function () { }
       , mainCamera: function () { }
       , getState: function () { l(this) }
     }
-    , he = gui.add(params, 'helpers')
-    , orbitCamera = gui.add(params, 'orbitCamera')
-    , mainCamera = gui.add(params, 'mainCamera')
 
-    he.onChange(value => this.toggleHelpers(value))
-    orbitCamera.onChange(() => { this.currentCamera = this.orbitCamera })
-    mainCamera.onChange(() => { this.currentCamera = this.camera })
+    gui.add(params, 'helpers').onChange(value => this.toggleHelpers(value))
+    gui.add(params, 'orbitCamera').onChange(() => { this.currentCamera = this.orbitCamera })
+    gui.add(params, 'mainCamera').onChange(() => { this.currentCamera = this.camera })
 
+    gui.add(posData, 'x', -500, 500).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'y', -500, 500).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'z', -500, 500).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen()
+    
     gui.add(params, 'getState')
   }
   
@@ -217,7 +224,7 @@ export class ThreeSceneComponent implements OnInit {
     const { 
       renderer, rendererCSS,
       stats, scene, sceneCSS,
-      currentCamera
+      currentCamera, mixer, clock
     } = this
 
     try{
@@ -226,9 +233,10 @@ export class ThreeSceneComponent implements OnInit {
       // monitored code goes here      
       renderer.render(scene, currentCamera)
       rendererCSS.render(sceneCSS, currentCamera)
+      
+      if (mixer) mixer.update(clock.getDelta())
 
       stats.end()
-      // requestAnimationFrame(() => this.render())
     } catch (err){
       l(err)
       gsap.ticker.remove(this.render.bind(this))
@@ -258,6 +266,21 @@ export class ThreeSceneComponent implements OnInit {
     }
 
     return new THREE.Mesh(geometry, material)
+  }
+
+  updateMesh(){
+    // l(this.currentMesh, posData)
+    this.currentMesh.position.set(posData.x, posData.y, posData.z)
+    this.currentMesh.rotation.set(0, posData.yRot, 0)
+  }
+
+  setCurrentMesh(gr){
+    this.currentMesh = gr
+
+    posData.x = gr.position.x
+    posData.y = gr.position.y
+    posData.z = gr.position.z
+    posData.yRot = gr.rotation.y
   }
 
   addObjects(){
@@ -457,6 +480,7 @@ export class ThreeSceneComponent implements OnInit {
       // To scale with the billboard group
       cssObject.scale.multiplyScalar(scaleFactor)
 
+      l(billGr)
       return billGr
     }
     , addBillboards = () => {
@@ -473,39 +497,30 @@ export class ThreeSceneComponent implements OnInit {
           
           const gr = createBillBoard({
             name: "Billboard Group 1 (Adidas)",
-            billboard: { mesh: bb, pos: [0, 0, 0], rot: [0, 0, 0] },
+            billboard: { mesh: bb, pos: [-137, 0, -30], rot: [0, -.57, 0] },
             plane: { scale: [160, 65, 0], pos: [0, 148, 8] },
-            css: { scale: .27, id: "bill1" }, scaleFactor: .5
+            css: { scale: .27, id: "bill1" }, scaleFactor: .2
           })
+          // , gr2 = createBillBoard({
+          //   name: "Billboard Group 4 (Converse)",
+          //   billboard: { mesh: bb.clone(), pos: [0, 100, 0], rot: [0, 0, 0] },
+          //   plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
+          //   css: { scale: .27, offset: [-.15, 0, 0], id: "bill4" }, scaleFactor: .5
+          // })
+          // , gr3 = createBillBoard({
+          //   name: "Billboard Group 6 (Nike)",
+          //   billboard: { mesh: bb.clone(), pos: [100, 140, 0], rot: [0, 0, 0] },
+          //   plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
+          //   css: { scale: .28, offset: [-.15, 0, 0], id: "bill6" }, scaleFactor: .5
+          // })
+          // , gr4 = createBillBoard({
+          //   name: "Billboard Group 7 (KFC)",
+          //   billboard: { mesh: bb.clone(), pos: [-190, 0, 0], rot: [0, 0, 0] },
+          //   plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
+          //   css: { scale: .28, offset: [-.15, 0, 0], id: "bill7" }, scaleFactor: .5
+          // })
 
-          l(gr)
-
-          const gr2 = createBillBoard({
-            name: "Billboard Group 4 (Converse)",
-            billboard: { mesh: bb.clone(), pos: [0, 100, 0], rot: [0, 0, 0] },
-            plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
-            css: { scale: .27, offset: [-.15, 0, 0], id: "bill4" }, scaleFactor: .5
-          })
-
-          l(gr2)
-
-          const gr3 = createBillBoard({
-            name: "Billboard Group 6 (Nike)",
-            billboard: { mesh: bb.clone(), pos: [100, 140, 0], rot: [0, 0, 0] },
-            plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
-            css: { scale: .28, offset: [-.15, 0, 0], id: "bill6" }, scaleFactor: .5
-          })
-
-          l(gr3)
-
-          const gr4 = createBillBoard({
-            name: "Billboard Group 7 (KFC)",
-            billboard: { mesh: bb.clone(), pos: [-190, 0, 0], rot: [0, 0, 0] },
-            plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
-            css: { scale: .28, offset: [-.15, 0, 0], id: "bill7" }, scaleFactor: .5
-          })
-
-          l(gr4)
+          this.setCurrentMesh(gr)
         })
       })
       
@@ -517,45 +532,43 @@ export class ThreeSceneComponent implements OnInit {
         bb.scale.multiplyScalar(10)
         bb.rotation.y = - Math.PI / 2
 
-        const gr = createBillBoard({
-          name: "Billboard Group 2 (Nike)",
-          billboard: { mesh: bb, pos: [100, 0, 0], rot: [0, 0, 0] },
-          plane: { scale: [75, 44, 0], pos: [0, 100, 2] },
-          css: { scale: .05, id: "bill2" }, scaleFactor: 1
-        })
-
-        l(gr)
-
-        const gr2 = createBillBoard({
-          name: "Billboard Group 3 (Coca Cola)",
-          billboard: { mesh: bb.clone(), pos: [-100, 0, 0], rot: [0, 0, 0] },
-          plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
-          css: { scale: .2, offset: [0, -4.8, 0], id: "bill3" }, scaleFactor: .8
-        })
-
-        l(gr2)
-
-        const gr3 = createBillBoard({
-          name: "Billboard Group 5 (North Face)",
-          billboard: { mesh: bb.clone(), pos: [-100, 120, 0], rot: [0, 0, 0] },
-          plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
-          css: { scale: .14, id: "bill5" }, scaleFactor: .8
-        })
-
-        l(gr3)
+        // const gr = createBillBoard({
+        //   name: "Billboard Group 2 (Nike)",
+        //   billboard: { mesh: bb, pos: [100, 0, 0], rot: [0, 0, 0] },
+        //   plane: { scale: [75, 44, 0], pos: [0, 100, 2] },
+        //   css: { scale: .05, id: "bill2" }, scaleFactor: 1
+        // })
+        // , gr2 = createBillBoard({
+        //   name: "Billboard Group 3 (Coca Cola)",
+        //   billboard: { mesh: bb.clone(), pos: [-100, 0, 0], rot: [0, 0, 0] },
+        //   plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
+        //   css: { scale: .2, offset: [0, -4.8, 0], id: "bill3" }, scaleFactor: .8
+        // })
+        // , gr3 = createBillBoard({
+        //   name: "Billboard Group 5 (North Face)",
+        //   billboard: { mesh: bb.clone(), pos: [-100, 120, 0], rot: [0, 0, 0] },
+        //   plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
+        //   css: { scale: .14, id: "bill5" }, scaleFactor: .8
+        // })
       })
 
       // Auto animated billboard
       gltf.load('assets/models/billboards/b3/scene.gltf', obj => { 
-        // l(obj)
-        const billboard3 = obj.scene 
-        billboard3.name = "Billboard 3"
-        // billboard3.position.z = 250
-        billboard3.scale.multiplyScalar(.15)
-        // router.rotation.set(0, Math.PI / 2 + .2, 0)
-        billboard3.position.set(200, 200, 0)
-        billboard3.rotation.set(0, -Math.PI / 2, 0)
-        this.introduce(billboard3)
+        const bb = obj.scene 
+        this.mixer = new THREE.AnimationMixer(bb)                
+
+        // Play a specific animation
+        const clips = obj.animations
+        , clip = THREE.AnimationClip.findByName(clips, 'Take 001' )
+        , action = this.mixer.clipAction(clip)
+        action.play()
+
+        bb.name = "Billboard Animated"
+        bb.scale.multiplyScalar(.15)
+        bb.position.set(200, 200, 0)
+        bb.rotation.set(0, -Math.PI / 2, 0)
+
+        // this.introduce(bb)
       })
 
       mtl.load("assets/models/billboards/b4/untitled.mtl", materials => {
@@ -568,23 +581,18 @@ export class ThreeSceneComponent implements OnInit {
           bb.scale.multiplyScalar(20)
           bb.rotation.y = Math.PI 
           
-          const gr = createBillBoard({
-            name: "Billboard Group 8 (Adidas)",
-            billboard: { mesh: bb, pos: [-200, 100, 0], rot: [0, 0, 0] },
-            plane: { scale: [143, 108, 0], pos: [0, 167.5, 8] },
-            css: { scale: .18, id: "bill8" }, scaleFactor: .5
-          })
-
-          l(gr)
-
-          const gr2 = createBillBoard({
-            name: "Billboard Group 9 (Zeta Office)",
-            billboard: { mesh: bb.clone(), pos: [0, 200, 0], rot: [0, 0, 0] },
-            plane: { scale: [109, 107, 0], pos: [0, 167.5, 8] },
-            css: { scale: .17, id: "bill9" }, scaleFactor: .5
-          })
-
-          l(gr2)
+          // const gr = createBillBoard({
+          //   name: "Billboard Group 8 (Adidas)",
+          //   billboard: { mesh: bb, pos: [-200, 100, 0], rot: [0, 0, 0] },
+          //   plane: { scale: [143, 108, 0], pos: [0, 167.5, 8] },
+          //   css: { scale: .18, id: "bill8" }, scaleFactor: .5
+          // })
+          // , gr2 = createBillBoard({
+          //   name: "Billboard Group 9 (Zeta Office)",
+          //   billboard: { mesh: bb.clone(), pos: [0, 200, 0], rot: [0, 0, 0] },
+          //   plane: { scale: [109, 107, 0], pos: [0, 167.5, 8] },
+          //   css: { scale: .17, id: "bill9" }, scaleFactor: .5
+          // })
         })
       })
       
@@ -600,7 +608,7 @@ export class ThreeSceneComponent implements OnInit {
       // Background
       addBg()
       // City
-      // addCity()
+      addCity()
       // Building ads
       // addBuildingAds()
       // Billboards
@@ -626,13 +634,4 @@ export class ThreeSceneComponent implements OnInit {
       }
     })
   }
-  // animate() {          
-  //   // We have to run this outside angular zones,
-  //   // because it could trigger heavy changeDetection cycles.
-  //   this.ngZone.runOutsideAngular(() => {
-  //     gsap.ticker.add(this.render.bind(this))
-  //     // window.addEventListener('DOMContentLoaded', this.resize.bind(this), false)
-  //     window.addEventListener('resize', this.resize.bind(this), false)
-  //   })
-  // }
 }
