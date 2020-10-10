@@ -14,7 +14,7 @@ import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
 interface Location { type: string }
-const posData = { x: 0, y: 0, z: 0, yRot : 0 }
+const posData = { x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1 }
 
 @Component({
   selector: 'app-three-scene',
@@ -164,16 +164,18 @@ export class ThreeSceneComponent implements OnInit {
       helpers: true
       , orbitCamera: function () { }
       , mainCamera: function () { }
-      , getState: function () { l(this) }
+      , getState: function () { l(this, posData) }
     }
 
     gui.add(params, 'helpers').onChange(value => this.toggleHelpers(value))
     gui.add(params, 'orbitCamera').onChange(() => { this.currentCamera = this.orbitCamera })
     gui.add(params, 'mainCamera').onChange(() => { this.currentCamera = this.camera })
 
-    gui.add(posData, 'x', -500, 500).onChange(() => this.updateMesh()).listen()
-    gui.add(posData, 'y', -500, 500).onChange(() => this.updateMesh()).listen()
-    gui.add(posData, 'z', -500, 500).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'scaleX', -200, 200, .1).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'scaleY', -200, 200, .1).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'x', -500, 500, .1).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'y', -500, 500, .1).onChange(() => this.updateMesh()).listen()
+    gui.add(posData, 'z', -500, 500, .1).onChange(() => this.updateMesh()).listen()
     gui.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen()
     
     gui.add(params, 'getState')
@@ -273,6 +275,7 @@ export class ThreeSceneComponent implements OnInit {
   updateMesh(){
     // l(this.currentMesh, posData)
     this.currentMesh.position.set(posData.x, posData.y, posData.z)
+    this.currentMesh.scale.set(posData.scaleX, posData.scaleY, 0)
     this.currentMesh.rotation.set(0, posData.yRot, 0)
   }
 
@@ -282,6 +285,8 @@ export class ThreeSceneComponent implements OnInit {
     posData.x = gr.position.x
     posData.y = gr.position.y
     posData.z = gr.position.z
+    posData.scaleX = gr.scale.x
+    posData.scaleY = gr.scale.y
     posData.yRot = gr.rotation.y
   }
 
@@ -351,78 +356,153 @@ export class ThreeSceneComponent implements OnInit {
         })
       })
     }
-    , addBuildingAds = () => {
-      // create the plane mesh
-      var material = new THREE.MeshBasicMaterial({ 
-        color: 0x000000, transparent: true, opacity: 0,
-        blending: THREE.NoBlending
-      });
+    , createBuildingAd = ({ name, plane, css, scaleFactor }) => {
+      // l(name, plane, css, scaleFactor)
+      // Group to move ad mesh
+      const builGr = new THREE.Group()
+      this.introduce(builGr)
+      builGr.name = name
 
-      var geometry = new THREE.PlaneGeometry();
-      var planeMesh= new THREE.Mesh( geometry, material );
-      // add it to the WebGL scene
-      planeMesh.name = "Banner 1"
-      this.introduce(planeMesh);
-      planeMesh.scale.set(25, 90, 0)
-      planeMesh.position.y = 50
-      planeMesh.position.z = 10
+      // Mesh to blend with ad gif
+      const adMesh = createMesh(
+        new THREE.PlaneGeometry(),
+        // Essentially this material creates a 'hole' in our webgl scene to peek 
+        // into the CSS scene behind it
+        new THREE.MeshBasicMaterial({ 
+          // wireframe: true,
+          // color: 0xff0000, 
+          transparent: true, opacity: 0,
+          color: 0x000000, blending: THREE.NoBlending 
+        })
+      )
+      adMesh.name = "Plane"
+      builGr.add(adMesh)
 
-      const cssObject = new CSS3DObject(document.getElementById("bill1"))
-      cssObject.position.copy(planeMesh.position)
-      cssObject.scale.multiplyScalar(.15)
+      const { scale, pos, rot } = plane
+      
+      // Set scale to fit ad gif
+      builGr.scale.set(scale[0], scale[1], scale[2])
+      // transforms for the group
+      builGr.position.set(pos[0], pos[1], pos[2])
+      builGr.rotation.set(rot[0], rot[1], rot[2])
+      builGr.scale.multiplyScalar(scaleFactor)
+      builGr.updateMatrixWorld()
+
+      // Get world coordinates of the ad mesh 
+      const targetPos = new THREE.Vector3()
+      adMesh.getWorldPosition(targetPos)
+
+      // Add ad gif to CSS3D scene
+      const { id, scale: sc, offset } = css
+      const cssObject = new CSS3DObject(document.getElementById(id))
       this.introduceCSS3D(cssObject)
-
-
-      var planeMesh2= new THREE.Mesh( geometry.clone(), material );
-      // add it to the WebGL scene
-      planeMesh2.name = "Banner 2"
-      this.introduce(planeMesh2);
-      planeMesh2.scale.set(15, 75, 0)
-      planeMesh2.rotation.y = -Math.PI
-      planeMesh2.position.y = 50
-      planeMesh2.position.z = -70
-
-      const cssObject2 = new CSS3DObject(document.getElementById("bill2"))
-      // cssObject2.position.set(0, 0, -100)
-      // cssObject2.rotation.set(0, -Math.PI, 0)
-      // cssObject2.scale.multiplyScalar(.18)
-      cssObject2.rotation.copy(planeMesh2.rotation)
-      cssObject2.position.copy(planeMesh2.position)
-      cssObject2.scale.multiplyScalar(.15)
-      this.introduceCSS3D(cssObject2)
       
-      var planeMesh3= new THREE.Mesh( geometry.clone(), material );
-      planeMesh3.name = "Banner 3"
-      
-      planeMesh3.scale.set(18, 90, 0)
-      planeMesh3.position.y = 50
-      planeMesh3.position.x = 20
-      planeMesh3.rotation.y = Math.PI / 2
-      
-      this.introduce(planeMesh3);
+      // Copy world coordinates of the ad mesh to the ad gif
+      cssObject.position.copy(targetPos)
+      if(offset){
+        cssObject.position.x+= offset[0]
+        cssObject.position.y+= offset[1]
+        cssObject.position.z+= offset[2]
+      }
+      cssObject.rotation.copy(builGr.rotation)
+      // To fit into the ad mesh
+      cssObject.scale.multiplyScalar(sc)
+      // To scale with the billboard group
+      cssObject.scale.multiplyScalar(scaleFactor)
 
-      const cssObject3 = new CSS3DObject(document.getElementById("bill3"))
-      cssObject3.rotation.copy(planeMesh3.rotation)
-      cssObject3.position.copy(planeMesh3.position)
-      cssObject3.scale.multiplyScalar(.15)
-      this.introduceCSS3D(cssObject3)
+      l(builGr)
+      return builGr
+    }
+    , addBuildingAds = () => {
+      const gr = createBuildingAd({
+        name: "Building Ad Group 1 (McDonalds)",
+        plane: { scale: [16.7, 62, 0], pos: [60, 56, 60], rot: [0, 0, 0] },
+        css: { scale: .12, offset: [0, 5, 0], id: "buil1" }, scaleFactor: 1
+      })
+      , gr2 = createBuildingAd({
+        name: "Building Ad Group 2 (Coke)",
+        plane: { scale: [17.1, 17.2, 0], pos: [-50, 33, 124], rot: [0, 0, 0] },
+        css: { scale: .07, id: "buil2" }, scaleFactor: 1
+      })
+      , gr3 = createBuildingAd({
+        name: "Building Ad Group 3 (KFC)",
+        plane: { scale: [17.1, 12.4, 0], pos: [50, 32, 113.5], rot: [0, 0, 0] },
+        css: { scale: .05, offset: [0, 0, 0], id: "buil3" }, scaleFactor: 1
+      })
 
-      var planeMesh4 = new THREE.Mesh( geometry.clone(), material );
-      planeMesh4.name = "Banner 4"
-      
-      planeMesh4.scale.set(18, 90, 0)
-      planeMesh4.position.y = 50
-      planeMesh4.position.z = -60
-      planeMesh4.position.x = -15
-      planeMesh4.rotation.y = - Math.PI / 2
-      
-      this.introduce(planeMesh4);
+      this.setCurrentMesh(gr3)
 
-      const cssObject4 = new CSS3DObject(document.getElementById("bill4"))
-      cssObject4.rotation.copy(planeMesh4.rotation)
-      cssObject4.position.copy(planeMesh4.position)
-      cssObject4.scale.multiplyScalar(.15)
-      this.introduceCSS3D(cssObject4)
+      // create the plane mesh
+      // var material = new THREE.MeshBasicMaterial({ 
+      //   color: 0x000000, transparent: true, opacity: 0,
+      //   blending: THREE.NoBlending
+      // });
+
+      // var geometry = new THREE.PlaneGeometry();
+      // var planeMesh= new THREE.Mesh( geometry, material );
+      // // add it to the WebGL scene
+      // planeMesh.name = "Banner 1"
+      // this.introduce(planeMesh);
+      // planeMesh.scale.set(25, 90, 0)
+      // planeMesh.position.y = 50
+      // planeMesh.position.z = 10
+
+      // const cssObject = new CSS3DObject(document.getElementById("buil1"))
+      // cssObject.position.copy(planeMesh.position)
+      // cssObject.scale.multiplyScalar(.15)
+      // this.introduceCSS3D(cssObject)
+
+      
+      // var planeMesh2= new THREE.Mesh( geometry.clone(), material );
+      // // add it to the WebGL scene
+      // planeMesh2.name = "Banner 2"
+      // this.introduce(planeMesh2);
+      // planeMesh2.scale.set(15, 75, 0)
+      // planeMesh2.rotation.y = -Math.PI
+      // planeMesh2.position.y = 50
+      // planeMesh2.position.z = -70
+
+      // const cssObject2 = new CSS3DObject(document.getElementById("bill2"))
+      // // cssObject2.position.set(0, 0, -100)
+      // // cssObject2.rotation.set(0, -Math.PI, 0)
+      // // cssObject2.scale.multiplyScalar(.18)
+      // cssObject2.rotation.copy(planeMesh2.rotation)
+      // cssObject2.position.copy(planeMesh2.position)
+      // cssObject2.scale.multiplyScalar(.15)
+      // this.introduceCSS3D(cssObject2)
+      
+      // var planeMesh3= new THREE.Mesh( geometry.clone(), material );
+      // planeMesh3.name = "Banner 3"
+      
+      // planeMesh3.scale.set(18, 90, 0)
+      // planeMesh3.position.y = 50
+      // planeMesh3.position.x = 20
+      // planeMesh3.rotation.y = Math.PI / 2
+      
+      // this.introduce(planeMesh3);
+
+      // const cssObject3 = new CSS3DObject(document.getElementById("bill3"))
+      // cssObject3.rotation.copy(planeMesh3.rotation)
+      // cssObject3.position.copy(planeMesh3.position)
+      // cssObject3.scale.multiplyScalar(.15)
+      // this.introduceCSS3D(cssObject3)
+
+      // var planeMesh4 = new THREE.Mesh( geometry.clone(), material );
+      // planeMesh4.name = "Banner 4"
+      
+      // planeMesh4.scale.set(18, 90, 0)
+      // planeMesh4.position.y = 50
+      // planeMesh4.position.z = -60
+      // planeMesh4.position.x = -15
+      // planeMesh4.rotation.y = - Math.PI / 2
+      
+      // this.introduce(planeMesh4);
+
+      // const cssObject4 = new CSS3DObject(document.getElementById("bill4"))
+      // cssObject4.rotation.copy(planeMesh4.rotation)
+      // cssObject4.position.copy(planeMesh4.position)
+      // cssObject4.scale.multiplyScalar(.15)
+      // this.introduceCSS3D(cssObject4)
     }
     , createBillBoard = ({ name, billboard, plane, css, scaleFactor }) => {
       // l(name, billboard, plane, css, scaleFactor)
@@ -556,33 +636,31 @@ export class ThreeSceneComponent implements OnInit {
       // Auto animated billboard
       gltf.load('assets/models/billboards/b3/scene.gltf', obj => { 
         const bb = obj.scene 
-        this.mixer = new THREE.AnimationMixer(bb)   
+        bb.name = "Billboard Animated"
+        bb.scale.multiplyScalar(.08)
+        bb.position.set(38, 65, 200)
+        bb.rotation.set(0, -2.34, 0)
+        this.introduce(bb)
 
+        this.mixer = new THREE.AnimationMixer(bb)   
         // Play a specific animation
         const clips = obj.animations
         , clip = THREE.AnimationClip.findByName(clips, 'Take 001' )
         , action = this.mixer.clipAction(clip)
         action.play()
-
-        bb.name = "Billboard Animated"
-        bb.scale.multiplyScalar(.08)
-        bb.position.set(38, 65, 200)
-        bb.rotation.set(0, -2.34, 0)
-
-        this.introduce(bb)
-
-        const bb2 = bb.clone()
-        bb2.position.set(38, 65, 100)
-        this.mixer2 = new THREE.AnimationMixer(bb2)
         
+        // Second billboard
+        const bb2 = bb.clone()
+        bb2.name = "Billboard Animated 2"
+        bb2.position.set(-181, 65, -168)
+        bb2.rotation.set(0, -.8, 0)
+        this.introduce(bb2)
+                
+        this.mixer2 = new THREE.AnimationMixer(bb2)
         const clips2 = obj.animations
         , clip2 = THREE.AnimationClip.findByName(clips2, 'Take 001' )
-        const action2 = this.mixer2.clipAction(clip2)
+        , action2 = this.mixer2.clipAction(clip2)
         action2.play()
-
-        this.introduce(bb2)
-
-        this.setCurrentMesh(bb2)
       })
 
       mtl.load("assets/models/billboards/b4/untitled.mtl", materials => {
@@ -595,18 +673,18 @@ export class ThreeSceneComponent implements OnInit {
           bb.scale.multiplyScalar(20)
           bb.rotation.y = Math.PI 
           
-          // const gr = createBillBoard({
-          //   name: "Billboard Group 8 (Adidas)",
-          //   billboard: { mesh: bb, pos: [-200, 100, 0], rot: [0, 0, 0] },
-          //   plane: { scale: [143, 108, 0], pos: [0, 167.5, 8] },
-          //   css: { scale: .18, id: "bill8" }, scaleFactor: .5
-          // })
-          // , gr2 = createBillBoard({
-          //   name: "Billboard Group 9 (Zeta Office)",
-          //   billboard: { mesh: bb.clone(), pos: [0, 200, 0], rot: [0, 0, 0] },
-          //   plane: { scale: [109, 107, 0], pos: [0, 167.5, 8] },
-          //   css: { scale: .17, id: "bill9" }, scaleFactor: .5
-          // })
+          const gr = createBillBoard({
+            name: "Billboard Group 8 (Adidas)",
+            billboard: { mesh: bb, pos: [202, 0, 83], rot: [0, -2.88, 0] },
+            plane: { scale: [143, 108, 0], pos: [0, 167.5, 8] },
+            css: { scale: .18, id: "bill8" }, scaleFactor: .25
+          })
+          , gr2 = createBillBoard({
+            name: "Billboard Group 9 (Zeta Office)",
+            billboard: { mesh: bb.clone(), pos: [-188, 0, 28], rot: [0, 2.63, 0] },
+            plane: { scale: [109, 107, 0], pos: [0, 167.5, 8] },
+            css: { scale: .17, id: "bill9" }, scaleFactor: .3
+          })          
         })
       })
       
@@ -624,9 +702,9 @@ export class ThreeSceneComponent implements OnInit {
       // City
       addCity()
       // Building ads
-      // addBuildingAds()
+      addBuildingAds()
       // Billboards
-      addBillboards()
+      // addBillboards()
     })()
   }
   showLocation(location){
