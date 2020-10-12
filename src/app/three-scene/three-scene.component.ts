@@ -468,8 +468,28 @@ export class ThreeSceneComponent implements OnInit {
         plane: { scale: [15.5, 59.8, 0], pos: [-70.2, 33.6, -5.4], rot: [0, -Math.PI / 2, 0] },
         css: { scale: .16, offset:[0, -2, 0], id: "buil11" }
       })
+      , gr12 = createBuildingAd({
+        name: "Building Ad Group 12 (Adidas)",
+        plane: { scale: [16.5, 26.9, 0], pos: [-131.7, 34.8, -59], rot: [0, -Math.PI / 2, 0] },
+        css: { scale: .07, id: "buil12" }
+      })
+      , gr13 = createBuildingAd({
+        name: "Building Ad Group 13 (Knee)",
+        plane: { scale: [15, 58.4, 0], pos: [-1.1, 36.9, 69.6], rot: [0, 0, 0] },
+        css: { scale: .12, id: "buil13" }
+      })
+      , gr14 = createBuildingAd({
+        name: "Building Ad Group 14 (Job)",
+        plane: { scale: [16, 61.2, 0], pos: [-247.4, 51.8, -181.8], rot: [0, Math.PI / 2, 0] },
+        css: { scale: .12, id: "buil14" }
+      })
+      , gr15 = createBuildingAd({
+        name: "Building Ad Group 15 (Playforce)",
+        plane: { scale: [16.8, 58.9, 0], pos: [207.4, 32.8, 259.5], rot: [0, -Math.PI / 2, 0] },
+        css: { scale: .07, id: "buil15" }
+      })
 
-      this.setCurrentMesh(gr11)
+      // this.setCurrentMesh(gr15)
     }
     , createBillBoard = ({ name, billboard, plane, css, scaleFactor }) => {
       // l(name, billboard, plane, css, scaleFactor)
@@ -671,7 +691,7 @@ export class ThreeSceneComponent implements OnInit {
       // Building ads
       addBuildingAds()
       // Billboards
-      // addBillboards()
+      addBillboards()
     })()
   }
   showLocation(location){
