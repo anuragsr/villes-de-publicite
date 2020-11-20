@@ -1,3 +1,4 @@
+/* tslint:disable:typedef */
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core'
 import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'

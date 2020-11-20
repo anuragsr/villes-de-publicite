@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector semicolon typedef component-class-suffix */
 import { Component, Inject } from '@angular/core'
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { LocationService } from '../services/location.service'
@@ -10,13 +11,13 @@ interface Location { type: string }
   template: '',
 })
 export class DialogComponent {
-  
+
   constructor(
     public dialog: MatDialog,
     private locationService: LocationService
   ) {
-    this.locationService.locationSet$.subscribe((location:Location) => {
-      if(location.type === "gallery") this.openDialog(location)
+    this.locationService.locationSet$.subscribe((location: Location) => {
+      if (location.type === 'gallery') { this.openDialog(location) }
     })
   }
 

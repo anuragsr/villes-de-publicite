@@ -1,3 +1,4 @@
+/* tslint:disable:semicolon */
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { LocationService } from './services/location.service'

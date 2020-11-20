@@ -1,6 +1,6 @@
 @import '../../scss/common';
 .mat-tooltip { font-size: 12px; }
-.tr{ 
+.tr{
   font-size: 12px; font-style: italic;
   font-weight: 100;
 }
@@ -20,19 +20,19 @@
     .ctn-chip{
       @include pa(10, 10);
       z-index: 2;
-      .mat-standard-chip{ 
-        height: auto; 
+      .mat-standard-chip{
+        height: auto;
         flex-direction: column;
         align-items: flex-start;
       }
     }
-    .overlay{ 
+    .overlay{
       // @include pa(0, 0);
-      // z-index: 1;
       @extend %fhw;
       @extend %oh;
       @extend %j-c;
-      position: relative; 
+      position: relative;
+      z-index: 1;
       background: rgba($b, 0);
       transition: background .7s;
       button{
@@ -41,8 +41,8 @@
         opacity: 0;
         transform: scale(0);
         transition: all .25s ease-out;
-        &:last-of-type{ 
-          margin-left: 25px; 
+        &:last-of-type{
+          margin-left: 25px;
           transition-delay: .1s;
         }
       }
@@ -61,7 +61,7 @@
       @extend %fhw;
       @extend %oh;
       @include pa(0, 0);
-      z-index: -1;
+      z-index: 0;
       img{
         transition: transform .4s ease-out;
         transform: translateX(0%);
