@@ -1,5 +1,75 @@
 <!--suppress ALL -->
-<div class="ctn-three" #rendererContainer></div>
+<div class="ctn-three" #rendererContainer>
+  <div class="controls">
+    <div class="item">
+      <button style="margin-right: 10px;" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+        <mat-icon>zoom_out_map</mat-icon>
+      </button>
+      <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+        <mat-icon>close_fullscreen</mat-icon>
+      </button>
+    </div>
+    <div class="item">
+      <mat-label class="mat-label">Toggle Controls</mat-label>
+      <mat-slide-toggle color="primary"></mat-slide-toggle>
+    </div>
+    <div class="inner">
+      <div class="item">
+        <mat-label class="mat-label">Rotate Scene</mat-label>
+        <mat-slide-toggle color="warn"></mat-slide-toggle>
+      </div>
+      <div class="item">
+        <mat-label class="mat-label">Greyscale</mat-label>
+        <mat-slide-toggle color="accent"></mat-slide-toggle>
+      </div>
+      <div class="item">
+        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <mat-icon>undo</mat-icon>
+        </button>
+        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <mat-icon>redo</mat-icon>
+        </button>
+      </div>
+      <div class="item">
+        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <mat-icon>zoom_out</mat-icon>
+        </button>
+      </div>
+      <div class="item">
+        <div>
+          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>expand_less</mat-icon>
+          </button>
+          <button class="plh" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>my_location</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>expand_more</mat-icon>
+          </button>
+          <button class="plh" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="ctn-css3D">
   <img class="css3d" id="bill1" src="assets/gifs/billboards/adidas1.gif" alt=""/>
   <img class="css3d" id="bill2" src="assets/gifs/billboards/nike1.gif" alt=""/>

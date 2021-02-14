@@ -3,6 +3,29 @@
   @extend %fhw;
   position: relative;
   box-shadow: 0px 0px 5px 0px rgba($b, .4);
+  .controls{
+    @include pa(0, "", "", 0);
+    width: 200px;
+    margin: 15px;
+    z-index: 2;
+    text-align: right;
+    .inner{
+      // margin-top: 15px;
+      // padding: 10px;
+      // background: rgba($b, .8);
+      // outline: 1px solid yellow;
+      button{ 
+        margin: 5px; 
+        &.plh{ visibility: hidden; }
+      }
+    }
+    .item{ margin-bottom: 10px; }
+    .mat-label{
+      display: inline-block;
+      vertical-align: text-bottom;
+      margin-right: 10px;
+    }
+  }
 }
 .css3d{
   @include pa(0, 0);

@@ -11,7 +11,8 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatChipsModule } from '@angular/material/chips'
 import { MatDialogModule } from '@angular/material/dialog'
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field'
 import { MatCarouselModule } from '@ngbmodule/material-carousel'
 
 import { ThreeSceneComponent } from './three-scene/three-scene.component'
@@ -38,6 +39,8 @@ import { CarouselComponent } from './carousel/carousel.component'
     MatTooltipModule,
     MatChipsModule,
     MatDialogModule,
+    MatSlideToggleModule,
+    MatFormFieldModule, 
     MatCarouselModule.forRoot(),
   ],
   providers: [

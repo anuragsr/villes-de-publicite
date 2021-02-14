@@ -96,14 +96,15 @@ export class ThreeSceneComponent implements OnInit {
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
     this.stats.showPanel(-1);
-
-    // this.enableInspector();
+      
+    this.enableInspector();
   }
 
   enableInspector(){
     // For THREE Inspector
     (window as any).THREE = THREE;
-    (window as any).scene = this.scene
+    (window as any).scene = this.scene;
+    (window as any).controls = this.controls
   }
 
   ngAfterViewInit() { this.init() }
@@ -682,6 +683,7 @@ export class ThreeSceneComponent implements OnInit {
     }
 
     mgr.onError = url => { l('There was an error loading ' + url) };
+    mgr.onLoad = () => { l('All models loaded') };
 
     (() => {
       // // Mesh for test
@@ -696,6 +698,7 @@ export class ThreeSceneComponent implements OnInit {
       addBillboards();
     })()
   }
+
   showLocation(location){
     // l(location, "From service")
     this.currentCamera = this.camera;

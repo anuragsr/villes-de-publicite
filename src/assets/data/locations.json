@@ -307,62 +307,6 @@
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             }
          ]
-      },
-      {
-         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
-         "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
-         "camPos": [200, 100, -100],
-         "images": [
-            {
-               "url": "https://picsum.photos/id/211/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/12/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/165/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/107/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            }
-         ]
-      },
-      {
-         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
-         "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
-         "camPos": [200, 100, -100],
-         "images": [
-            {
-               "url": "https://picsum.photos/id/211/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/12/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/165/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            },
-            {
-               "url": "https://picsum.photos/id/107/900/500",
-               "title": "This is a title",
-               "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
-            }
-         ]
       }
    ]
 }
