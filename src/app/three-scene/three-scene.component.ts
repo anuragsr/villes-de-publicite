@@ -63,7 +63,7 @@ export class ThreeSceneComponent implements OnInit {
 
     const w = window.innerWidth, h = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 700);
+    this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 800);
     this.camera.name = 'Main Camera';
     this.camera.position.z = 1000;
     this.cameraHelper = new THREE.CameraHelper(this.camera);
@@ -277,8 +277,8 @@ export class ThreeSceneComponent implements OnInit {
 
   render() {
     const {
-      renderer, rendererCSS,
-      stats, scene, sceneCSS, controls,
+      renderer, rendererCSS, mapOpts,
+      stats, scene, sceneCSS, cameraParentOuter,
       currentCamera, mixer, mixer2, clock
     } = this;
 
@@ -291,7 +291,7 @@ export class ThreeSceneComponent implements OnInit {
 
       if (mixer) { mixer.update(clock.getDelta()) }
       if (mixer2) { mixer2.update(clock.getDelta()) }
-      controls.update()
+      mapOpts.rotateScene && (cameraParentOuter.rotation.y+= .001)
 
       stats.end()
     } catch (err){
