@@ -24,6 +24,7 @@ const posData = { x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1 };
 })
 export class ThreeSceneComponent implements OnInit {
   @ViewChild('rendererContainer') rendererContainer: ElementRef;
+  mapOpts: any;
   controls: OrbitControls;
   controls2: OrbitControls;
   origin: THREE.Vector3;
@@ -49,6 +50,8 @@ export class ThreeSceneComponent implements OnInit {
   orbitCamera = null;
   camera = null;
   count = 0;
+  cameraParentOuter: THREE.Mesh
+  cameraParentInner: THREE.Mesh
 
   ngOnInit(): void {}
 
@@ -57,15 +60,27 @@ export class ThreeSceneComponent implements OnInit {
     this.locationService.locationSet$.subscribe((location: Location) => {
       if (location.type === 'map') { this.showLocation(location) }
     });
-    // this.renderer.shadowMap.enabled = true
-    // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
     const w = window.innerWidth, h = window.innerHeight;
 
-    this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 2000);
+    this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 700);
     this.camera.name = 'Main Camera';
     this.camera.position.z = 1000;
     this.cameraHelper = new THREE.CameraHelper(this.camera);
+    this.cameraParentOuter = new THREE.Mesh(
+      new THREE.SphereGeometry(355, 16, 16),
+      new THREE.MeshStandardMaterial({ 
+        color: 0x0ff0f0, wireframe: true, 
+        transparent: true, opacity: .8 
+      })
+    );
+    this.cameraParentInner = new THREE.Mesh(
+      new THREE.SphereGeometry(350, 16, 16), 
+      new THREE.MeshStandardMaterial({ 
+        color: 0xfff000, wireframe: true,
+        transparent: true, opacity: .3
+      })
+    );
 
     this.origin = new THREE.Vector3(0, 0, 0);
     // this.cameraStartPos = new THREE.Vector3(0, 150, 200)
@@ -80,9 +95,8 @@ export class ThreeSceneComponent implements OnInit {
     this.gridHelper.name = 'Grid Helper';
 
     this.orbitCamera = new THREE.PerspectiveCamera(45, w / h, 1, 5000);
-    this.controls = new OrbitControls(this.orbitCamera, this.renderer.domElement);
-    this.controls2 = new OrbitControls(this.orbitCamera, this.rendererCSS.domElement);
-
+    // this.controls2 = new OrbitControls(this.orbitCamera, this.rendererCSS.domElement);
+    this.initMapControls();    
     this.currentCamera = this.orbitCamera;
 
     this.spotLight1 = new THREE.DirectionalLight(0xffffff, 1);
@@ -96,15 +110,15 @@ export class ThreeSceneComponent implements OnInit {
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
     this.stats.showPanel(-1);
-      
-    this.enableInspector();
+    
+    // this.enableInspector();
   }
 
   enableInspector(){
     // For THREE Inspector
     (window as any).THREE = THREE;
     (window as any).scene = this.scene;
-    (window as any).controls = this.controls
+    (window as any).cameraParentOuter = this.cameraParentOuter
   }
 
   ngAfterViewInit() { this.init() }
@@ -126,7 +140,7 @@ export class ThreeSceneComponent implements OnInit {
     const {
       scene, renderer, sceneCSS, rendererCSS,
       rendererContainer, origin, camera,
-      orbitCamera, cameraStartPos,
+      orbitCamera, cameraStartPos, cameraParentInner, cameraParentOuter,
       spotLightMesh1, spotLight1, lightPos1
     } = this;
 
@@ -141,9 +155,12 @@ export class ThreeSceneComponent implements OnInit {
     orbitCamera.lookAt(origin);
     scene.add(orbitCamera);
 
-    camera.position.set(200, 150, 200);
+    cameraParentInner.add(camera);
+    // camera.position.set(200, 150, 200);
+    camera.position.set(0, 350, 0);
+    // camera.lookAt(origin);
     camera.lookAt(origin);
-    scene.add(camera);
+    // scene.add(camera);
 
     // Spotlight and representational mesh
     spotLightMesh1.position.copy(lightPos1);
@@ -155,6 +172,15 @@ export class ThreeSceneComponent implements OnInit {
 
     scene.add(new THREE.AmbientLight(0xffffff, .5))
     // scene.fog = new THREE.Fog(0xffffff, 500, 1200)
+
+    // cameraParentInner.rotation.x = -Math.PI/4
+    cameraParentInner.rotation.x = Math.PI/4
+    cameraParentOuter.add(cameraParentInner)
+    
+    cameraParentOuter.position.y = 50
+    cameraParentOuter.rotation.y = Math.PI/2
+    
+    scene.add(cameraParentOuter)
   }
 
   initGUI(){
@@ -178,7 +204,7 @@ export class ThreeSceneComponent implements OnInit {
     folder.add(posData, 'y', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'z', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen();
-    folder.open();
+    // folder.open();
 
     gui.add(params, 'getState')
   }
@@ -193,12 +219,36 @@ export class ThreeSceneComponent implements OnInit {
       scene.add(axesHelper);
       scene.add(cameraHelper);
       stats.showPanel(0)
+      this.cameraParentOuter.visible = true
     } else{
       scene.remove(gridHelper);
       scene.remove(axesHelper);
       scene.remove(cameraHelper);
       stats.showPanel(-1)
+      this.cameraParentOuter.visible = false
     }
+  }
+
+  initMapControls(){
+    this.controls = new OrbitControls(this.orbitCamera, this.renderer.domElement);
+    this.mapOpts = {
+      toggleControls: true,
+      rotateScene: false,
+      greyScale: false,
+    }
+    this.setOrbitControls()
+  }
+  
+  setOrbitControls(){
+    // Not this one, but the mainCamera to be rotated
+    const { controls, mapOpts } = this
+    l(mapOpts)
+    // controls.enableDamping = true;
+    // controls.dampingFactor = 0.05;
+    // controls.enablePan = false;
+    // controls.enableKeys = false;
+    // controls.autoRotate = mapOpts.rotateScene;
+    // controls.autoRotateSpeed = .4;
   }
 
   addListeners(){
@@ -228,7 +278,7 @@ export class ThreeSceneComponent implements OnInit {
   render() {
     const {
       renderer, rendererCSS,
-      stats, scene, sceneCSS,
+      stats, scene, sceneCSS, controls,
       currentCamera, mixer, mixer2, clock
     } = this;
 
@@ -241,6 +291,7 @@ export class ThreeSceneComponent implements OnInit {
 
       if (mixer) { mixer.update(clock.getDelta()) }
       if (mixer2) { mixer2.update(clock.getDelta()) }
+      controls.update()
 
       stats.end()
     } catch (err){

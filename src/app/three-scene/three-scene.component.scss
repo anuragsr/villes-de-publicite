@@ -3,23 +3,31 @@
   @extend %fhw;
   position: relative;
   box-shadow: 0px 0px 5px 0px rgba($b, .4);
+  transition: all .3s;
+  filter: grayscale(0%);
+  &.grey{ filter: grayscale(100%); }
   .controls{
     @include pa(0, "", "", 0);
-    width: 200px;
+    // width: 200px;
     margin: 15px;
     z-index: 2;
     text-align: right;
+    background: rgba($b, .6);
+    height: 385px;
+    overflow: hidden;
+    transition: height .3s;
+    &.closed{ height: 35px; }
     .inner{
-      // margin-top: 15px;
-      // padding: 10px;
-      // background: rgba($b, .8);
       // outline: 1px solid yellow;
       button{ 
         margin: 5px; 
         &.plh{ visibility: hidden; }
       }
     }
-    .item{ margin-bottom: 10px; }
+    .item{
+      padding: 5px;
+      &.center{ text-align: center; }
+    }
     .mat-label{
       display: inline-block;
       vertical-align: text-bottom;

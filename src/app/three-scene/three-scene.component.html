@@ -1,70 +1,104 @@
 <!--suppress ALL -->
-<div class="ctn-three" #rendererContainer>
-  <div class="controls">
-    <div class="item">
-      <button style="margin-right: 10px;" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+<div class="ctn-three" #rendererContainer [ngClass]="{'grey': mapOpts.greyScale}">
+  <div class="controls" [ngClass]="{'closed': !mapOpts.toggleControls}">
+    <!-- <div class="item">
+      <button style="margin-right: 10px;" mat-mini-fab color="warn" 
+        matTooltip="Plein écran | Full Screen" 
+        [matTooltipShowDelay]="100"
+        [matTooltipPosition]="'left'"
+        >
         <mat-icon>zoom_out_map</mat-icon>
       </button>
-      <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+      <button mat-mini-fab color="warn" 
+        matTooltip="Sortir | Exit" 
+        [matTooltipShowDelay]="100"
+        [matTooltipPosition]="'left'"
+        >
         <mat-icon>close_fullscreen</mat-icon>
       </button>
-    </div>
+    </div> -->
     <div class="item">
       <mat-label class="mat-label">Toggle Controls</mat-label>
-      <mat-slide-toggle color="primary"></mat-slide-toggle>
+      <mat-slide-toggle color="primary" [(ngModel)]="mapOpts.toggleControls"></mat-slide-toggle>
     </div>
     <div class="inner">
       <div class="item">
         <mat-label class="mat-label">Rotate Scene</mat-label>
-        <mat-slide-toggle color="warn"></mat-slide-toggle>
+        <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene" (ngModelChange)="setOrbitControls()"></mat-slide-toggle>
       </div>
       <div class="item">
         <mat-label class="mat-label">Greyscale</mat-label>
-        <mat-slide-toggle color="accent"></mat-slide-toggle>
+        <mat-slide-toggle color="accent" [(ngModel)]="mapOpts.greyScale"></mat-slide-toggle>
       </div>
-      <div class="item">
-        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+      <div class="item center">
+        <button mat-mini-fab color="warn" 
+          matTooltip="Tourner à gauche | Rotate Left"
+          [matTooltipShowDelay]="100"
+          [matTooltipPosition]="'left'"
+          >
           <mat-icon>undo</mat-icon>
         </button>
-        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+        <button mat-mini-fab color="primary" 
+          matTooltip="Tourner à droite | Rotate Right"
+          [matTooltipShowDelay]="100"
+          [matTooltipPosition]="'right'"
+          >
           <mat-icon>redo</mat-icon>
         </button>
       </div>
-      <div class="item">
-        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+      <div class="item center">
+        <button mat-mini-fab color="warn" 
+          matTooltip="Zoom avant | Zoom In"
+          [matTooltipShowDelay]="100"
+          [matTooltipPosition]="'left'"
+          >
           <mat-icon>zoom_in</mat-icon>
         </button>
-        <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+        <button mat-mini-fab color="primary" 
+          matTooltip="Zoom arrière | Zoom Out"
+          [matTooltipShowDelay]="100"
+          [matTooltipPosition]="'right'"
+          >
           <mat-icon>zoom_out</mat-icon>
         </button>
       </div>
       <div class="item">
         <div>
-          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <button mat-mini-fab color="warn" matTooltip="Nord | North" 
+            [matTooltipShowDelay]="100"
+            [matTooltipPosition]="'above'"
+            >
             <mat-icon>expand_less</mat-icon>
           </button>
-          <button class="plh" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
+          <button class="plh" mat-mini-fab></button>
         </div>
         <div>
-          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <button mat-mini-fab color="warn" matTooltip="Ouest | West" 
+            [matTooltipShowDelay]="100"
+            [matTooltipPosition]="'left'"
+            >
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <button mat-mini-fab color="primary" matTooltip="Haut | Top" 
+            [matTooltipShowDelay]="100"
+            >
             <mat-icon>my_location</mat-icon>
           </button>
-          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <button mat-mini-fab color="warn" matTooltip="Est | East" 
+            [matTooltipShowDelay]="100"
+            [matTooltipPosition]="'right'"
+            >
             <mat-icon>chevron_right</mat-icon>
           </button>
         </div>
         <div>
-          <button mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
+          <button mat-mini-fab color="warn" matTooltip="Sud | South" 
+            [matTooltipShowDelay]="100"
+            [matTooltipPosition]="'below'"
+            >
             <mat-icon>expand_more</mat-icon>
           </button>
-          <button class="plh" mat-mini-fab color="warn" matTooltip="Galerie | Gallery" [matTooltipShowDelay]="500">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
+          <button class="plh" mat-mini-fab></button>
         </div>
       </div>
     </div>
