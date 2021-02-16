@@ -235,13 +235,34 @@ export class ThreeSceneComponent implements OnInit {
       toggleControls: true,
       rotateScene: false,
       greyScale: false,
+      isFS: false
     }
+    const changeHandler = () => { this.mapOpts.isFS = !this.mapOpts.isFS }
+    document.addEventListener('fullscreenchange', changeHandler, false)
+    document.addEventListener('mozfullscreenchange', changeHandler, false)
+    document.addEventListener('MSFullscreenChange', changeHandler, false)
+    document.addEventListener('webkitfullscreenchange', changeHandler, false)
   }
   
+  toggleFullscreen(type){
+    const elem = this.rendererContainer.nativeElement    
+    if(type === "open"){
+      if (elem.requestFullscreen) { elem.requestFullscreen() } 
+      else if (elem.msRequestFullscreen) { elem.msRequestFullscreen() } 
+      else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen() } 
+      else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen() }
+    } else{
+      if (document.exitFullscreen) { document.exitFullscreen() } 
+      else if ((document as any).webkitExitFullscreen) { (document as any).webkitExitFullscreen() }
+      else if ((document as any).mozCancelFullScreen) { (document as any).mozCancelFullScreen() } 
+      else if ((document as any).msExitFullscreen) { (document as any).msExitFullscreen() }
+    }
+  }
+
   adjustCamera(type, subtype){
     const { camera, cameraParentInner, cameraParentOuter } = this
     switch(type){
-      case 'rotate':        
+      case 'rotate':
         gsap.to(cameraParentOuter.rotation, { duration: .5, y: subtype === "right"?"+=.2":"-=.2"})
         break;
       case 'zoom':
@@ -256,11 +277,26 @@ export class ThreeSceneComponent implements OnInit {
         break;
       default: // position
         switch(subtype){
-          case 'NORTH': break;
-          case 'WEST': break;
-          case 'EAST': break;
-          default: // SOUTH
-          break;
+          case 'NORTH': 
+            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI })
+            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            break;
+          case 'EAST': 
+            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 1.5 })
+            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            break;
+          case 'SOUTH': 
+            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 2 })
+            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            break;
+          case 'WEST': 
+            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * .5 })
+            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            break;
+          default: // TOP
+            gsap.to(cameraParentOuter.rotation, { duration: .5, y: 0 })
+            gsap.to(cameraParentInner.rotation, { duration: .5, x: 0 })
+            break;
         }
         break;
     }
@@ -481,7 +517,7 @@ export class ThreeSceneComponent implements OnInit {
       // To fit into the ad mesh
       cssObject.scale.multiplyScalar(sc);
 
-      l(builGr);
+      // l(builGr);
       return builGr
     }
     , addBuildingAds = () => {
@@ -621,7 +657,7 @@ export class ThreeSceneComponent implements OnInit {
       // To scale with the billboard group
       cssObject.scale.multiplyScalar(scaleFactor);
 
-      l(billGr);
+      // l(billGr);
       return billGr
     }
     , addBillboards = () => {

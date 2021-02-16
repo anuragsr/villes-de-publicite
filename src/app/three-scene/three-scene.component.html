@@ -1,11 +1,13 @@
 <!--suppress ALL -->
 <div class="ctn-three" #rendererContainer [ngClass]="{'grey': mapOpts.greyScale}">
-  <div class="controls" [ngClass]="{'closed': !mapOpts.toggleControls}">
-    <!-- <div class="item">
-      <button style="margin-right: 10px;" mat-mini-fab color="warn" 
+  <div class="controls">
+    <div class="item fs">
+      <button mat-mini-fab color="warn" 
         matTooltip="Plein écran | Full Screen" 
         [matTooltipShowDelay]="100"
         [matTooltipPosition]="'left'"
+        (click)="toggleFullscreen('open')"
+        [ngClass]="{'hidden': mapOpts.isFS}"
         >
         <mat-icon>zoom_out_map</mat-icon>
       </button>
@@ -13,99 +15,108 @@
         matTooltip="Sortir | Exit" 
         [matTooltipShowDelay]="100"
         [matTooltipPosition]="'left'"
+        (click)="toggleFullscreen()"
+        [ngClass]="{'hidden': !mapOpts.isFS}"
         >
         <mat-icon>close_fullscreen</mat-icon>
       </button>
-    </div> -->
-    <div class="item">
-      <mat-label class="mat-label">Toggle Controls</mat-label>
-      <mat-slide-toggle color="primary" [(ngModel)]="mapOpts.toggleControls"></mat-slide-toggle>
     </div>
-    <div class="inner">
+    <div class="bg" [ngClass]="{'closed': !mapOpts.toggleControls}">
       <div class="item">
-        <mat-label class="mat-label">Rotate Scene</mat-label>
-        <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene"></mat-slide-toggle>
+        <mat-label class="mat-label">Toggle Controls</mat-label>
+        <mat-slide-toggle color="primary" [(ngModel)]="mapOpts.toggleControls"></mat-slide-toggle>
       </div>
-      <div class="item">
-        <mat-label class="mat-label">Greyscale</mat-label>
-        <mat-slide-toggle color="accent" [(ngModel)]="mapOpts.greyScale"></mat-slide-toggle>
-      </div>
-      <div class="item center">
-        <button mat-mini-fab color="warn" 
-          matTooltip="Tourner à gauche | Rotate Left"
-          [matTooltipShowDelay]="100"
-          [matTooltipPosition]="'left'"
-          (click)="adjustCamera('rotate', 'left')"
-          >
-          <mat-icon>undo</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" 
-          matTooltip="Tourner à droite | Rotate Right"
-          [matTooltipShowDelay]="100"
-          [matTooltipPosition]="'right'"
-          (click)="adjustCamera('rotate', 'right')"
-          >
-          <mat-icon>redo</mat-icon>
-        </button>
-      </div>
-      <div class="item center">
-        <button mat-mini-fab color="warn" 
-          matTooltip="Zoom avant | Zoom In"
-          [matTooltipShowDelay]="100"
-          [matTooltipPosition]="'left'"
-          (click)="adjustCamera('zoom', 'in')"
-          >
-          <mat-icon>zoom_in</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" 
-          matTooltip="Zoom arrière | Zoom Out"
-          [matTooltipShowDelay]="100"
-          [matTooltipPosition]="'right'"
-          (click)="adjustCamera('zoom', 'out')"
-          >
-          <mat-icon>zoom_out</mat-icon>
-        </button>
-      </div>
-      <div class="item">
-        <div>
-          <button mat-mini-fab color="warn" matTooltip="Nord | North" 
-            [matTooltipShowDelay]="100"
-            [matTooltipPosition]="'above'"
-            >
-            <mat-icon>expand_less</mat-icon>
-          </button>
-          <button class="plh" mat-mini-fab></button>
+      <div class="inner">
+        <div class="item">
+          <mat-label class="mat-label">Rotate Scene</mat-label>
+          <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene"></mat-slide-toggle>
         </div>
-        <div>
-          <button mat-mini-fab color="warn" matTooltip="Ouest | West" 
+        <div class="item">
+          <mat-label class="mat-label">Greyscale</mat-label>
+          <mat-slide-toggle color="accent" [(ngModel)]="mapOpts.greyScale"></mat-slide-toggle>
+        </div>
+        <div class="item center">
+          <button mat-mini-fab color="warn" 
+            matTooltip="Tourner à gauche | Rotate Left"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'left'"
+            (click)="adjustCamera('rotate', 'left')"
             >
-            <mat-icon>chevron_left</mat-icon>
+            <mat-icon>undo</mat-icon>
           </button>
-          <button mat-mini-fab color="primary" matTooltip="Haut | Top" 
-            [matTooltipShowDelay]="100"
-            >
-            <mat-icon>my_location</mat-icon>
-          </button>
-          <button mat-mini-fab color="warn" matTooltip="Est | East" 
+          <button mat-mini-fab color="primary" 
+            matTooltip="Tourner à droite | Rotate Right"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'right'"
+            (click)="adjustCamera('rotate', 'right')"
             >
-            <mat-icon>chevron_right</mat-icon>
+            <mat-icon>redo</mat-icon>
           </button>
         </div>
-        <div>
-          <button mat-mini-fab color="warn" matTooltip="Sud | South" 
+        <div class="item center">
+          <button mat-mini-fab color="warn" 
+            matTooltip="Zoom avant | Zoom In"
             [matTooltipShowDelay]="100"
-            [matTooltipPosition]="'below'"
+            [matTooltipPosition]="'left'"
+            (click)="adjustCamera('zoom', 'in')"
             >
-            <mat-icon>expand_more</mat-icon>
+            <mat-icon>zoom_in</mat-icon>
           </button>
-          <button class="plh" mat-mini-fab></button>
+          <button mat-mini-fab color="primary" 
+            matTooltip="Zoom arrière | Zoom Out"
+            [matTooltipShowDelay]="100"
+            [matTooltipPosition]="'right'"
+            (click)="adjustCamera('zoom', 'out')"
+            >
+            <mat-icon>zoom_out</mat-icon>
+          </button>
+        </div>
+        <div class="item">
+          <div>
+            <button mat-mini-fab color="warn" matTooltip="Nord | North" 
+              [matTooltipShowDelay]="100"
+              [matTooltipPosition]="'above'"
+              (click)="adjustCamera('position', 'NORTH')"
+              >
+              <mat-icon>expand_less</mat-icon>
+            </button>
+            <button class="plh" mat-mini-fab></button>
+          </div>
+          <div>
+            <button mat-mini-fab color="warn" matTooltip="Ouest | West" 
+              (click)="adjustCamera('position', 'WEST')"
+              [matTooltipShowDelay]="100"
+              [matTooltipPosition]="'left'"
+              >
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" matTooltip="Haut | Top" 
+              (click)="adjustCamera('position', 'TOP')"
+              [matTooltipShowDelay]="100"
+              >
+              <mat-icon>my_location</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" matTooltip="Est | East" 
+              (click)="adjustCamera('position', 'EAST')"
+              [matTooltipShowDelay]="100"
+              [matTooltipPosition]="'right'"
+              >
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+          <div>
+            <button mat-mini-fab color="warn" matTooltip="Sud | South" 
+              (click)="adjustCamera('position', 'SOUTH')"
+              [matTooltipShowDelay]="100"
+              [matTooltipPosition]="'below'"
+              >
+              <mat-icon>expand_more</mat-icon>
+            </button>
+            <button class="plh" mat-mini-fab></button>
+          </div>
         </div>
       </div>
-    </div>
+    </div>  
   </div>
 </div>
 <div id="ctn-css3D">

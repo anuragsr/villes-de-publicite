@@ -12,11 +12,13 @@
     margin: 15px;
     z-index: 2;
     text-align: right;
-    background: rgba($b, .6);
-    height: 385px;
     overflow: hidden;
     transition: height .3s;
-    &.closed{ height: 35px; }
+    .bg{ 
+      background: rgba($b, .6); 
+      height: 385px;
+      &.closed{ height: 35px; }
+    }
     .inner{
       // outline: 1px solid yellow;
       button{ 
@@ -27,6 +29,8 @@
     .item{
       padding: 5px;
       &.center{ text-align: center; }
+      &.fs{ padding-right: 0; }
+      button.hidden{ display: none; }
     }
     .mat-label{
       display: inline-block;
