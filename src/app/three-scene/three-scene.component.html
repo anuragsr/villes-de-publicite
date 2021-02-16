@@ -24,7 +24,7 @@
     <div class="inner">
       <div class="item">
         <mat-label class="mat-label">Rotate Scene</mat-label>
-        <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene" (ngModelChange)="setOrbitControls()"></mat-slide-toggle>
+        <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene"></mat-slide-toggle>
       </div>
       <div class="item">
         <mat-label class="mat-label">Greyscale</mat-label>
@@ -35,6 +35,7 @@
           matTooltip="Tourner à gauche | Rotate Left"
           [matTooltipShowDelay]="100"
           [matTooltipPosition]="'left'"
+          (click)="adjustCamera('rotate', 'left')"
           >
           <mat-icon>undo</mat-icon>
         </button>
@@ -42,6 +43,7 @@
           matTooltip="Tourner à droite | Rotate Right"
           [matTooltipShowDelay]="100"
           [matTooltipPosition]="'right'"
+          (click)="adjustCamera('rotate', 'right')"
           >
           <mat-icon>redo</mat-icon>
         </button>
@@ -51,6 +53,7 @@
           matTooltip="Zoom avant | Zoom In"
           [matTooltipShowDelay]="100"
           [matTooltipPosition]="'left'"
+          (click)="adjustCamera('zoom', 'in')"
           >
           <mat-icon>zoom_in</mat-icon>
         </button>
@@ -58,6 +61,7 @@
           matTooltip="Zoom arrière | Zoom Out"
           [matTooltipShowDelay]="100"
           [matTooltipPosition]="'right'"
+          (click)="adjustCamera('zoom', 'out')"
           >
           <mat-icon>zoom_out</mat-icon>
         </button>

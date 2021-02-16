@@ -98,10 +98,11 @@ export class ThreeSceneComponent implements OnInit {
     // this.controls2 = new OrbitControls(this.orbitCamera, this.rendererCSS.domElement);
     this.initMapControls();    
     this.currentCamera = this.orbitCamera;
+    (window as any).currentCamera = this.currentCamera
 
     this.spotLight1 = new THREE.DirectionalLight(0xffffff, 1);
 
-    this.lightPos1 = new THREE.Vector3(500, 150, -500);
+    this.lightPos1 = new THREE.Vector3(-500, 150, 0);
     this.spotLightMesh1 = new THREE.Mesh(
       new THREE.SphereBufferGeometry(5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2),
       new THREE.MeshPhongMaterial({ color: 0xffff00 })
@@ -155,13 +156,6 @@ export class ThreeSceneComponent implements OnInit {
     orbitCamera.lookAt(origin);
     scene.add(orbitCamera);
 
-    cameraParentInner.add(camera);
-    // camera.position.set(200, 150, 200);
-    camera.position.set(0, 350, 0);
-    // camera.lookAt(origin);
-    camera.lookAt(origin);
-    // scene.add(camera);
-
     // Spotlight and representational mesh
     spotLightMesh1.position.copy(lightPos1);
     spotLight1.position.copy(lightPos1);
@@ -173,8 +167,14 @@ export class ThreeSceneComponent implements OnInit {
     scene.add(new THREE.AmbientLight(0xffffff, .5))
     // scene.fog = new THREE.Fog(0xffffff, 500, 1200)
 
-    // cameraParentInner.rotation.x = -Math.PI/4
-    cameraParentInner.rotation.x = Math.PI/4
+
+    cameraParentInner.add(camera);
+    // camera.position.set(200, 150, 200);
+    camera.position.set(0, 350, 0);
+    camera.lookAt(origin);
+
+    cameraParentInner.rotation.y = Math.PI
+    cameraParentInner.rotation.x = -Math.PI/4
     cameraParentOuter.add(cameraParentInner)
     
     cameraParentOuter.position.y = 50
@@ -236,19 +236,34 @@ export class ThreeSceneComponent implements OnInit {
       rotateScene: false,
       greyScale: false,
     }
-    this.setOrbitControls()
   }
   
-  setOrbitControls(){
-    // Not this one, but the mainCamera to be rotated
-    const { controls, mapOpts } = this
-    l(mapOpts)
-    // controls.enableDamping = true;
-    // controls.dampingFactor = 0.05;
-    // controls.enablePan = false;
-    // controls.enableKeys = false;
-    // controls.autoRotate = mapOpts.rotateScene;
-    // controls.autoRotateSpeed = .4;
+  adjustCamera(type, subtype){
+    const { camera, cameraParentInner, cameraParentOuter } = this
+    switch(type){
+      case 'rotate':        
+        gsap.to(cameraParentOuter.rotation, { duration: .5, y: subtype === "right"?"+=.2":"-=.2"})
+        break;
+      case 'zoom':
+        let { zoom } = camera 
+        gsap.to(camera, { 
+          duration: .5, 
+          zoom: subtype === "in" ? "+=.2" : ( zoom > 1 ? "-=.2" : 1),
+          onUpdate: function () {
+            camera.updateProjectionMatrix();
+          }
+        })
+        break;
+      default: // position
+        switch(subtype){
+          case 'NORTH': break;
+          case 'WEST': break;
+          case 'EAST': break;
+          default: // SOUTH
+          break;
+        }
+        break;
+    }
   }
 
   addListeners(){
@@ -377,6 +392,7 @@ export class ThreeSceneComponent implements OnInit {
         );
         scene.add(bg);
         bg.position.y = 70
+        bg.rotation.y = Math.PI - .65
       })
     }
     , addCity = () => {
