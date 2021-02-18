@@ -16,6 +16,7 @@ import { l } from '../helpers/common'
 
 interface Location { type: string }
 const posData = { x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1 };
+let camPosData = { x: 0, y: 350, z: 0, xRot: 0, yRot : 0, zRot: 0 };
 
 @Component({
   selector: 'app-three-scene',
@@ -30,6 +31,7 @@ export class ThreeSceneComponent implements OnInit {
   origin: THREE.Vector3;
   cameraStartPos: THREE.Vector3;
   cameraHelper: THREE.CameraHelper;
+  movingCameraHelper: THREE.CameraHelper;
   axesHelper: THREE.AxesHelper;
   gridHelper: THREE.GridHelper;
   currentCamera: any;
@@ -47,11 +49,13 @@ export class ThreeSceneComponent implements OnInit {
   scene = new THREE.Scene();
   rendererCSS = new CSS3DRenderer();
   sceneCSS = new THREE.Scene();
-  orbitCamera = null;
-  camera = null;
+  orbitCamera: THREE.PerspectiveCamera
+  camera: THREE.PerspectiveCamera
+  movingCamera: THREE.PerspectiveCamera
   count = 0;
   cameraParentOuter: THREE.Mesh
   cameraParentInner: THREE.Mesh
+  targetObj: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>
 
   ngOnInit(): void {}
 
@@ -64,26 +68,30 @@ export class ThreeSceneComponent implements OnInit {
     const w = window.innerWidth, h = window.innerHeight;
 
     this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 800);
-    this.camera.name = 'Main Camera';
-    this.camera.position.z = 1000;
+    this.camera.name = 'rotating';
+    this.camera.position.set(0, 350, 0);
     this.cameraHelper = new THREE.CameraHelper(this.camera);
     this.cameraParentOuter = new THREE.Mesh(
       new THREE.SphereGeometry(355, 16, 16),
       new THREE.MeshStandardMaterial({ 
         color: 0x0ff0f0, wireframe: true, 
-        transparent: true, opacity: .8 
+        transparent: true, opacity: .1 
       })
     );
     this.cameraParentInner = new THREE.Mesh(
       new THREE.SphereGeometry(350, 16, 16), 
       new THREE.MeshStandardMaterial({ 
         color: 0xfff000, wireframe: true,
-        transparent: true, opacity: .3
+        transparent: true, opacity: .1
       })
     );
 
+    this.movingCamera = new THREE.PerspectiveCamera(45, w / h, 1, 800);
+    this.movingCamera.name = 'moving';
+    this.movingCamera.position.set(0, 350, 0);
+    this.movingCameraHelper = new THREE.CameraHelper(this.movingCamera);
+
     this.origin = new THREE.Vector3(0, 0, 0);
-    // this.cameraStartPos = new THREE.Vector3(0, 150, 200)
     this.cameraStartPos = new THREE.Vector3(0, 500, 0);
     this.axesHelper = new THREE.AxesHelper(500);
     (this.axesHelper.material as any).opacity = .5;
@@ -94,14 +102,16 @@ export class ThreeSceneComponent implements OnInit {
     (this.gridHelper.material as any).transparent = true;
     this.gridHelper.name = 'Grid Helper';
 
-    this.orbitCamera = new THREE.PerspectiveCamera(45, w / h, 1, 5000);
-    // this.controls2 = new OrbitControls(this.orbitCamera, this.rendererCSS.domElement);
-    this.initMapControls();    
+    this.orbitCamera = new THREE.PerspectiveCamera(45, w / h, 1, 3000);
+    this.orbitCamera.name = 'orbit';
+    this.initMapControls();
     this.currentCamera = this.orbitCamera;
-    (window as any).currentCamera = this.currentCamera
-
+    this.targetObj = new THREE.Mesh(
+      new THREE.SphereGeometry(5, 2, 2),
+      new THREE.MeshStandardMaterial({ color: 0xff0000, wireframe: true })
+    );
+    
     this.spotLight1 = new THREE.DirectionalLight(0xffffff, 1);
-
     this.lightPos1 = new THREE.Vector3(-500, 150, 0);
     this.spotLightMesh1 = new THREE.Mesh(
       new THREE.SphereBufferGeometry(5, 50, 50, 0, Math.PI * 2, 0, Math.PI * 2),
@@ -112,14 +122,17 @@ export class ThreeSceneComponent implements OnInit {
     document.body.appendChild(this.stats.dom);
     this.stats.showPanel(-1);
     
-    // this.enableInspector();
+    this.enableInspector();
   }
 
   enableInspector(){
     // For THREE Inspector
     (window as any).THREE = THREE;
     (window as any).scene = this.scene;
-    (window as any).cameraParentOuter = this.cameraParentOuter
+    (window as any).cameraParentOuter = this.cameraParentOuter;
+    (window as any).targetObj = this.targetObj;
+    (window as any).movingCamera = this.movingCamera;
+    (window as any).camera = this.camera
   }
 
   ngAfterViewInit() { this.init() }
@@ -139,8 +152,8 @@ export class ThreeSceneComponent implements OnInit {
 
   initScene(){
     const {
-      scene, renderer, sceneCSS, rendererCSS,
-      rendererContainer, origin, camera,
+      scene, renderer, rendererCSS, targetObj,
+      rendererContainer, origin, camera, movingCamera,
       orbitCamera, cameraStartPos, cameraParentInner, cameraParentOuter,
       spotLightMesh1, spotLight1, lightPos1
     } = this;
@@ -167,11 +180,20 @@ export class ThreeSceneComponent implements OnInit {
     scene.add(new THREE.AmbientLight(0xffffff, .5))
     // scene.fog = new THREE.Fog(0xffffff, 500, 1200)
 
-
     cameraParentInner.add(camera);
-    // camera.position.set(200, 150, 200);
-    camera.position.set(0, 350, 0);
     camera.lookAt(origin);
+    
+    targetObj.position.set(0, 200, 0);
+    scene.add(targetObj);
+    
+    movingCamera.rotation.z = Math.PI
+    movingCamera.rotation.x = -Math.PI/2
+    // movingCamera.position.y+=50
+    // movingCamera.lookAt(targetObj.position);
+    scene.add(movingCamera);
+
+    this.setCurrentMesh(targetObj);
+    // camera.lookAt(targetObj.position);
 
     cameraParentInner.rotation.y = Math.PI
     cameraParentInner.rotation.x = -Math.PI/4
@@ -181,6 +203,15 @@ export class ThreeSceneComponent implements OnInit {
     cameraParentOuter.rotation.y = Math.PI/2
     
     scene.add(cameraParentOuter)
+
+    // gsap.to(targetObj.position, {
+    //   y: "+=20", duration: 1,
+    //   repeat: -1, yoyo: true,
+    //   onUpdate: () => {
+    //     // l(targetObj.position)
+    //     this.camera.lookAt(this.targetObj.position)
+    //   }
+    // })
   }
 
   initGUI(){
@@ -188,14 +219,18 @@ export class ThreeSceneComponent implements OnInit {
     // , { currentMesh } = this
     , params =  {
       helpers: true
-      , orbitCamera() { }
-      , mainCamera() { }
+      , orbitCamera() {}
+      , rotatingCamera() {}
+      , movingCamera() {}
       , getState() { l(this, posData) }
+      , calibrateCameras() {}
     };
 
     gui.add(params, 'helpers').onChange(value => this.toggleHelpers(value));
     gui.add(params, 'orbitCamera').onChange(() => { this.currentCamera = this.orbitCamera });
-    gui.add(params, 'mainCamera').onChange(() => { this.currentCamera = this.camera });
+    gui.add(params, 'rotatingCamera').onChange(() => { this.currentCamera = this.camera });
+    gui.add(params, 'movingCamera').onChange(() => { this.currentCamera = this.movingCamera });
+    gui.add(params, 'calibrateCameras').onChange(this.calibrateCameras.bind(this));
 
     const folder = gui.addFolder('Current Mesh');
     folder.add(posData, 'scaleX', -200, 200, .1).onChange(() => this.updateMesh()).listen();
@@ -204,7 +239,16 @@ export class ThreeSceneComponent implements OnInit {
     folder.add(posData, 'y', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'z', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen();
-    // folder.open();
+    folder.open();
+
+    const folder2 = gui.addFolder('movingCamera');
+    folder2.add(camPosData, 'x', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camPosData, 'y', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camPosData, 'z', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camPosData, 'xRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camPosData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camPosData, 'zRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.open();
 
     gui.add(params, 'getState')
   }
@@ -212,25 +256,27 @@ export class ThreeSceneComponent implements OnInit {
   toggleHelpers(val) {
     const {
       scene, gridHelper, axesHelper,
-      cameraHelper, stats
+      cameraHelper, movingCameraHelper, stats
     } = this;
     if (val){
       scene.add(gridHelper);
       scene.add(axesHelper);
       scene.add(cameraHelper);
+      scene.add(movingCameraHelper);
       stats.showPanel(0)
       this.cameraParentOuter.visible = true
     } else{
       scene.remove(gridHelper);
       scene.remove(axesHelper);
       scene.remove(cameraHelper);
+      scene.remove(movingCameraHelper);
       stats.showPanel(-1)
       this.cameraParentOuter.visible = false
     }
   }
 
   initMapControls(){
-    this.controls = new OrbitControls(this.orbitCamera, this.renderer.domElement);
+    this.controls = new OrbitControls(this.orbitCamera, this.renderer.domElement)
     this.mapOpts = {
       toggleControls: true,
       rotateScene: false,
@@ -259,45 +305,96 @@ export class ThreeSceneComponent implements OnInit {
     }
   }
 
+  navigateCamera(type, subtype){
+    const { currentCamera } = this
+    l(currentCamera.name)
+    if (currentCamera.name !== "rotating"){
+      this.calibrateCameras(type, subtype)
+    } else {
+      this.adjustCamera(type, subtype)
+    }
+  }
+
+  calibrateCameras(type, subtype){
+    const { camera, movingCamera } = this
+      , targetPos = new THREE.Vector3()
+      , targetRot = new THREE.Quaternion()
+      
+    camera.getWorldPosition(targetPos)
+    camera.getWorldQuaternion(targetRot)
+      
+    const duration = .5
+    gsap.timeline()
+    .to(movingCamera.position, {
+      duration,
+      x: targetPos.x,
+      y: targetPos.y,
+      z: targetPos.z
+    }, "lb0")
+    .to(movingCamera.quaternion, {
+      duration,
+      x: targetRot.x,
+      y: targetRot.y,
+      z: targetRot.z,
+      w: targetRot.w,
+      onComplete: () => {
+        this.currentCamera = camera
+        this.adjustCamera(type, subtype)
+      }
+    }, "lb0")
+  }
+
   adjustCamera(type, subtype){
     const { camera, cameraParentInner, cameraParentOuter } = this
+    , tl = gsap.timeline({
+      onComplete: () => {
+        const { movingCamera } = this
+          , targetPos = new THREE.Vector3()
+          , targetRot = new THREE.Quaternion()
+
+        camera.getWorldPosition(targetPos)
+        camera.getWorldQuaternion(targetRot)
+
+        movingCamera.position.copy(targetPos)
+        movingCamera.quaternion.copy(targetRot)
+      }
+    })
+
     switch(type){
       case 'rotate':
-        gsap.to(cameraParentOuter.rotation, { duration: .5, y: subtype === "right"?"+=.2":"-=.2"})
+        tl.to(cameraParentOuter.rotation, { duration: .5, y: subtype === "right"?"+=.2":"-=.2"})
         break;
       case 'zoom':
         let { zoom } = camera 
-        gsap.to(camera, { 
+        tl.to(camera, { 
           duration: .5, 
           zoom: subtype === "in" ? "+=.2" : ( zoom > 1 ? "-=.2" : 1),
-          onUpdate: function () {
-            camera.updateProjectionMatrix();
-          }
+          onUpdate: () => camera.updateProjectionMatrix()
         })
         break;
       default: // position
         switch(subtype){
           case 'NORTH': 
-            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI })
-            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            tl.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI }, "lb0")
+            tl.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 }, "lb0")
             break;
           case 'EAST': 
-            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 1.5 })
-            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            tl.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 1.5 }, "lb0")
+            tl.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 }, "lb0")
             break;
           case 'SOUTH': 
-            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 2 })
-            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            tl.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * 2 }, "lb0")
+            tl.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 }, "lb0")
             break;
           case 'WEST': 
-            gsap.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * .5 })
-            gsap.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 })
+            tl.to(cameraParentOuter.rotation, { duration: .5, y: Math.PI * .5 }, "lb0")
+            tl.to(cameraParentInner.rotation, { duration: .5, x: -Math.PI/4 }, "lb0")
             break;
           default: // TOP
-            gsap.to(cameraParentOuter.rotation, { duration: .5, y: 0 })
-            gsap.to(cameraParentInner.rotation, { duration: .5, x: 0 })
+            tl.to(cameraParentOuter.rotation, { duration: .5, y: 0 }, "lb0")
+            tl.to(cameraParentInner.rotation, { duration: .5, x: 0 }, "lb0")
             break;
-        }
+          }
         break;
     }
   }
@@ -310,7 +407,7 @@ export class ThreeSceneComponent implements OnInit {
   resize(){
     const {
       rendererContainer, renderer,
-      rendererCSS, camera, orbitCamera
+      rendererCSS, camera, movingCamera, orbitCamera
     } = this
     , el =  rendererContainer.nativeElement
     , w = el.clientWidth
@@ -321,6 +418,9 @@ export class ThreeSceneComponent implements OnInit {
 
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    
+    movingCamera.aspect = w / h;
+    movingCamera.updateProjectionMatrix()
 
     orbitCamera.aspect = w / h;
     orbitCamera.updateProjectionMatrix()
@@ -380,6 +480,11 @@ export class ThreeSceneComponent implements OnInit {
     this.currentMesh.position.set(posData.x, posData.y, posData.z);
     this.currentMesh.scale.set(posData.scaleX, posData.scaleY, 1);
     this.currentMesh.rotation.set(0, posData.yRot, 0)
+  }
+  
+  updateMovingCamera(){
+    this.movingCamera.position.set(camPosData.x, camPosData.y, camPosData.z);
+    this.movingCamera.rotation.set(camPosData.xRot, camPosData.yRot, camPosData.zRot);
   }
 
   setCurrentMesh(gr){
@@ -804,21 +909,23 @@ export class ThreeSceneComponent implements OnInit {
 
   showLocation(location){
     // l(location, "From service")
-    this.currentCamera = this.camera;
-    gsap.to(this.currentCamera.position, {
+    
+    // Use the separate camera.
+    this.currentCamera = this.movingCamera
+    gsap.to(this.targetObj.position, {
+      duration: 1,
+      x: location.targetPos[0],
+      y: location.targetPos[1],
+      z: location.targetPos[2],
+      onUpdate: () => {
+        // this.movingCamera.lookAt(this.targetObj.position)
+      }
+    })
+    gsap.to(this.movingCamera.position, {
       duration: 1,
       x: location.camPos[0],
       y: location.camPos[1],
       z: location.camPos[2],
-      onUpdate: () => {
-        this.currentCamera.lookAt(
-          new THREE.Vector3(
-            location.xyzPos[0],
-            location.xyzPos[1],
-            location.xyzPos[2],
-          )
-        )
-      }
     })
   }
 }

@@ -15,7 +15,7 @@
         matTooltip="Sortir | Exit" 
         [matTooltipShowDelay]="100"
         [matTooltipPosition]="'left'"
-        (click)="toggleFullscreen()"
+        (click)="toggleFullscreen('')"
         [ngClass]="{'hidden': !mapOpts.isFS}"
         >
         <mat-icon>close_fullscreen</mat-icon>
@@ -40,7 +40,7 @@
             matTooltip="Tourner à gauche | Rotate Left"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'left'"
-            (click)="adjustCamera('rotate', 'left')"
+            (click)="navigateCamera('rotate', 'left')"
             >
             <mat-icon>undo</mat-icon>
           </button>
@@ -48,7 +48,7 @@
             matTooltip="Tourner à droite | Rotate Right"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'right'"
-            (click)="adjustCamera('rotate', 'right')"
+            (click)="navigateCamera('rotate', 'right')"
             >
             <mat-icon>redo</mat-icon>
           </button>
@@ -58,7 +58,7 @@
             matTooltip="Zoom avant | Zoom In"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'left'"
-            (click)="adjustCamera('zoom', 'in')"
+            (click)="navigateCamera('zoom', 'in')"
             >
             <mat-icon>zoom_in</mat-icon>
           </button>
@@ -66,7 +66,7 @@
             matTooltip="Zoom arrière | Zoom Out"
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'right'"
-            (click)="adjustCamera('zoom', 'out')"
+            (click)="navigateCamera('zoom', 'out')"
             >
             <mat-icon>zoom_out</mat-icon>
           </button>
@@ -76,7 +76,7 @@
             <button mat-mini-fab color="warn" matTooltip="Nord | North" 
               [matTooltipShowDelay]="100"
               [matTooltipPosition]="'above'"
-              (click)="adjustCamera('position', 'NORTH')"
+              (click)="navigateCamera('position', 'NORTH')"
               >
               <mat-icon>expand_less</mat-icon>
             </button>
@@ -84,20 +84,20 @@
           </div>
           <div>
             <button mat-mini-fab color="warn" matTooltip="Ouest | West" 
-              (click)="adjustCamera('position', 'WEST')"
+              (click)="navigateCamera('position', 'WEST')"
               [matTooltipShowDelay]="100"
               [matTooltipPosition]="'left'"
               >
               <mat-icon>chevron_left</mat-icon>
             </button>
             <button mat-mini-fab color="primary" matTooltip="Haut | Top" 
-              (click)="adjustCamera('position', 'TOP')"
+              (click)="navigateCamera('position', 'TOP')"
               [matTooltipShowDelay]="100"
               >
               <mat-icon>my_location</mat-icon>
             </button>
             <button mat-mini-fab color="warn" matTooltip="Est | East" 
-              (click)="adjustCamera('position', 'EAST')"
+              (click)="navigateCamera('position', 'EAST')"
               [matTooltipShowDelay]="100"
               [matTooltipPosition]="'right'"
               >
@@ -106,7 +106,7 @@
           </div>
           <div>
             <button mat-mini-fab color="warn" matTooltip="Sud | South" 
-              (click)="adjustCamera('position', 'SOUTH')"
+              (click)="navigateCamera('position', 'SOUTH')"
               [matTooltipShowDelay]="100"
               [matTooltipPosition]="'below'"
               >

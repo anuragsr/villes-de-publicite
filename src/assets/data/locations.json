@@ -3,8 +3,8 @@
       {
          "name": "Centre Ville", "nameEn": "City Centre",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
-         "camPos": [100, 100, 100],
+         "targetPos": [162, 37, -7],
+         "camPos": [202, 25, -135],
          "images": [
             {
                "url": "https://picsum.photos/id/11/900/500",
@@ -31,8 +31,8 @@
       {
          "name": "Zone Industrielle", "nameEn": "Industrial District",
          "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
-         "camPos": [200, 100, -100],
+         "targetPos": [120, 37, 45],
+         "camPos": [100, 150, 50],
          "images": [
             {
                "url": "https://picsum.photos/id/211/900/500",
@@ -59,7 +59,7 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [100, 100, 100],
          "images": [
             {
@@ -87,7 +87,7 @@
       {
          "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [200, 100, -100],
          "images": [
             {
@@ -115,7 +115,7 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [100, 100, 100],
          "images": [
             {
@@ -143,7 +143,7 @@
       {
          "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [200, 100, -100],
          "images": [
             {
@@ -171,7 +171,7 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [100, 100, 100],
          "images": [
             {
@@ -199,7 +199,7 @@
       {
          "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [200, 100, -100],
          "images": [
             {
@@ -227,7 +227,7 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [100, 100, 100],
          "images": [
             {
@@ -255,7 +255,7 @@
       {
          "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [200, 100, -100],
          "images": [
             {
@@ -283,7 +283,7 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "xyzPos": [0, 0, 0],
+         "targetPos": [0, 0, 0],
          "camPos": [100, 100, 100],
          "images": [
             {

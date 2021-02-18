@@ -13,8 +13,8 @@
     z-index: 2;
     text-align: right;
     overflow: hidden;
-    transition: height .3s;
     .bg{ 
+      transition: height .3s;
       background: rgba($b, .6); 
       height: 385px;
       &.closed{ height: 35px; }
