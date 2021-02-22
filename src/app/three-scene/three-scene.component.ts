@@ -15,8 +15,52 @@ import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
 interface Location { type: string }
-const posData = { x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1 };
-let camPosData = { x: 0, y: 350, z: 0, xRot: 0, yRot : 0, zRot: 0 };
+
+let posData = { 
+  x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1,
+  copy: function () {
+    l("copy", this.x, this.y, this.z)
+    copyToClipboard(`[${rd(this.x)}, ${rd(this.y)}, ${rd(this.z)}]`)
+  }
+}
+, camData = { 
+  x: 0, y: 350, z: 0, lookAt: true,
+  xRot: 0, yRot : 0, zRot: 0, 
+  copy: function() {
+    l("copy", this.x, this.y, this.z)
+    copyToClipboard(`[${rd(this.x)}, ${rd(this.y)}, ${rd(this.z)}]`) 
+  },
+  copyRot: function () {
+    l("copyRot", this.xRot, this.yRot, this.zRot)
+    copyToClipboard(`[${rd(this.xRot)}, ${rd(this.yRot)}, ${rd(this.zRot)}]`)
+  },
+}
+
+const rd = num => Math.round((num + Number.EPSILON) * 100) / 100
+, copyToClipboard = (text) => {
+  if ((window as any).clipboardData && (window as any).clipboardData.setData) {
+    // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+    return (window as any).clipboardData.setData("Text", text);
+
+  }
+  else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+    var textarea = document.createElement("textarea");
+    textarea.textContent = text;
+    textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+    }
+    catch (ex) {
+      console.warn("Copy to clipboard failed.", ex);
+      return false;
+    }
+    finally {
+      document.body.removeChild(textarea);
+    }
+  }
+}
 
 @Component({
   selector: 'app-three-scene',
@@ -24,6 +68,7 @@ let camPosData = { x: 0, y: 350, z: 0, xRot: 0, yRot : 0, zRot: 0 };
   styleUrls: ['./three-scene.component.scss']
 })
 export class ThreeSceneComponent implements OnInit {
+  // #region
   @ViewChild('rendererContainer') rendererContainer: ElementRef;
   mapOpts: any;
   controls: OrbitControls;
@@ -56,8 +101,9 @@ export class ThreeSceneComponent implements OnInit {
   cameraParentOuter: THREE.Mesh
   cameraParentInner: THREE.Mesh
   targetObj: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>
-
   ngOnInit(): void {}
+
+  // #endregion
 
   constructor(private locationService: LocationService) {
 
@@ -86,7 +132,7 @@ export class ThreeSceneComponent implements OnInit {
       })
     );
 
-    this.movingCamera = new THREE.PerspectiveCamera(45, w / h, 1, 800);
+    this.movingCamera = new THREE.PerspectiveCamera(45, w / h, .1, 10000);
     this.movingCamera.name = 'moving';
     this.movingCamera.position.set(0, 350, 0);
     this.movingCameraHelper = new THREE.CameraHelper(this.movingCamera);
@@ -186,10 +232,9 @@ export class ThreeSceneComponent implements OnInit {
     targetObj.position.set(0, 200, 0);
     scene.add(targetObj);
     
-    movingCamera.rotation.z = Math.PI
-    movingCamera.rotation.x = -Math.PI/2
-    // movingCamera.position.y+=50
-    // movingCamera.lookAt(targetObj.position);
+    // movingCamera.rotation.z = Math.PI
+    // movingCamera.rotation.x = -Math.PI/2
+    
     scene.add(movingCamera);
 
     this.setCurrentMesh(targetObj);
@@ -203,15 +248,6 @@ export class ThreeSceneComponent implements OnInit {
     cameraParentOuter.rotation.y = Math.PI/2
     
     scene.add(cameraParentOuter)
-
-    // gsap.to(targetObj.position, {
-    //   y: "+=20", duration: 1,
-    //   repeat: -1, yoyo: true,
-    //   onUpdate: () => {
-    //     // l(targetObj.position)
-    //     this.camera.lookAt(this.targetObj.position)
-    //   }
-    // })
   }
 
   initGUI(){
@@ -224,33 +260,39 @@ export class ThreeSceneComponent implements OnInit {
       , movingCamera() {}
       , getState() { l(this, posData) }
       , calibrateCameras() {}
-    };
+    }
 
     gui.add(params, 'helpers').onChange(value => this.toggleHelpers(value));
-    gui.add(params, 'orbitCamera').onChange(() => { this.currentCamera = this.orbitCamera });
-    gui.add(params, 'rotatingCamera').onChange(() => { this.currentCamera = this.camera });
-    gui.add(params, 'movingCamera').onChange(() => { this.currentCamera = this.movingCamera });
-    gui.add(params, 'calibrateCameras').onChange(this.calibrateCameras.bind(this));
+    gui.add(params, 'getState');
+
+    const folderC = gui.addFolder('Cameras');
+    folderC.add(params, 'orbitCamera').onChange(() => { this.currentCamera = this.orbitCamera });
+    folderC.add(params, 'rotatingCamera').onChange(() => { this.currentCamera = this.camera });
+    folderC.add(params, 'movingCamera').onChange(() => { this.currentCamera = this.movingCamera });
+    // folderC.add(params, 'calibrateCameras').onChange(this.calibrateCameras.bind(this));
+    folderC.add(camData, 'lookAt')
+    folderC.open();
 
     const folder = gui.addFolder('Current Mesh');
-    folder.add(posData, 'scaleX', -200, 200, .1).onChange(() => this.updateMesh()).listen();
-    folder.add(posData, 'scaleY', -200, 200, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'x', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'y', -500, 500, .1).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'z', -500, 500, .1).onChange(() => this.updateMesh()).listen();
-    folder.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen();
+    // folder.add(posData, 'scaleX', -200, 200, .1).onChange(() => this.updateMesh()).listen();
+    // folder.add(posData, 'scaleY', -200, 200, .1).onChange(() => this.updateMesh()).listen();
+    // folder.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen();
+    folder.add(posData, 'copy')
     folder.open();
 
-    const folder2 = gui.addFolder('movingCamera');
-    folder2.add(camPosData, 'x', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
-    folder2.add(camPosData, 'y', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
-    folder2.add(camPosData, 'z', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
-    folder2.add(camPosData, 'xRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
-    folder2.add(camPosData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
-    folder2.add(camPosData, 'zRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    const folder2 = gui.addFolder('Moving Camera');
+    folder2.add(camData, 'x', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'y', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'z', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'xRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'zRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
+    folder2.add(camData, 'copy')
+    folder2.add(camData, 'copyRot')
     folder2.open();
-
-    gui.add(params, 'getState')
   }
 
   toggleHelpers(val) {
@@ -316,7 +358,7 @@ export class ThreeSceneComponent implements OnInit {
   }
 
   calibrateCameras(type, subtype){
-    const { camera, movingCamera } = this
+    const { camera, movingCamera, origin } = this
       , targetPos = new THREE.Vector3()
       , targetRot = new THREE.Quaternion()
       
@@ -337,6 +379,9 @@ export class ThreeSceneComponent implements OnInit {
       y: targetRot.y,
       z: targetRot.z,
       w: targetRot.w,
+      onUpdate: () => {
+        movingCamera.lookAt(origin)
+      },
       onComplete: () => {
         this.currentCamera = camera
         this.adjustCamera(type, subtype)
@@ -428,7 +473,7 @@ export class ThreeSceneComponent implements OnInit {
 
   render() {
     const {
-      renderer, rendererCSS, mapOpts,
+      renderer, rendererCSS, mapOpts, movingCamera, targetObj,
       stats, scene, sceneCSS, cameraParentOuter,
       currentCamera, mixer, mixer2, clock
     } = this;
@@ -442,6 +487,7 @@ export class ThreeSceneComponent implements OnInit {
 
       if (mixer) { mixer.update(clock.getDelta()) }
       if (mixer2) { mixer2.update(clock.getDelta()) }
+      // movingCamera.lookAt(targetObj.position)
       mapOpts.rotateScene && (cameraParentOuter.rotation.y+= .001)
 
       stats.end()
@@ -480,11 +526,14 @@ export class ThreeSceneComponent implements OnInit {
     this.currentMesh.position.set(posData.x, posData.y, posData.z);
     this.currentMesh.scale.set(posData.scaleX, posData.scaleY, 1);
     this.currentMesh.rotation.set(0, posData.yRot, 0)
+    this.movingCamera.lookAt(
+      new THREE.Vector3(posData.x, posData.y, posData.z)
+    )
   }
   
   updateMovingCamera(){
-    this.movingCamera.position.set(camPosData.x, camPosData.y, camPosData.z);
-    this.movingCamera.rotation.set(camPosData.xRot, camPosData.yRot, camPosData.zRot);
+    this.movingCamera.position.set(camData.x, camData.y, camData.z);
+    this.movingCamera.rotation.set(camData.xRot, camData.yRot, camData.zRot);
   }
 
   setCurrentMesh(gr){
@@ -791,7 +840,7 @@ export class ThreeSceneComponent implements OnInit {
           })
           , gr3 = createBillBoard({
             name: 'Billboard Group 6 (Nike)',
-            billboard: { mesh: bb.clone(), pos: [159, 0, 0], rot: [0, 2.63, 0] },
+            billboard: { mesh: bb.clone(), pos: [155, 0, 0], rot: [0, 2.63, 0] },
             plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
             css: { scale: .28, offset: [-.15, 0, 0], id: 'bill6' }, scaleFactor: .3
           })
@@ -801,6 +850,8 @@ export class ThreeSceneComponent implements OnInit {
             plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
             css: { scale: .28, offset: [-.15, 0, 0], id: 'bill7' }, scaleFactor: .25
           })
+          
+          // this.setCurrentMesh(gr3);
 
         })
       });
@@ -909,23 +960,48 @@ export class ThreeSceneComponent implements OnInit {
 
   showLocation(location){
     // l(location, "From service")
-    
+    const { movingCamera, targetObj } = this
     // Use the separate camera.
-    this.currentCamera = this.movingCamera
-    gsap.to(this.targetObj.position, {
-      duration: 1,
-      x: location.targetPos[0],
-      y: location.targetPos[1],
-      z: location.targetPos[2],
-      onUpdate: () => {
-        // this.movingCamera.lookAt(this.targetObj.position)
-      }
-    })
-    gsap.to(this.movingCamera.position, {
-      duration: 1,
+    // this.currentCamera = this.movingCamera
+
+    gsap.to([camData, movingCamera.position], {
+      duration: 2,
       x: location.camPos[0],
       y: location.camPos[1],
       z: location.camPos[2],
     })
+    gsap.to([posData, targetObj.position], {
+      duration: 2,
+      x: location.targetPos[0],
+      y: location.targetPos[1],
+      z: location.targetPos[2],
+      onUpdate: function() {
+        // const target = this.targets()[0]
+        // movingCamera.lookAt(new THREE.Vector3(
+        //   gsap.getProperty(target, "x"),
+        //   gsap.getProperty(target, "y"),
+        //   gsap.getProperty(target, "z"),
+        // ))
+        // l(
+        //   gsap.getProperty(target, "x"),
+        //   gsap.getProperty(target, "y"),
+        //   gsap.getProperty(target, "z"),
+        // )
+        // l(targetObj.position)
+        
+        // l(gsap.getProperty(this.targets()[0], "x"))
+        camData.xRot = movingCamera.rotation.x
+        camData.yRot = movingCamera.rotation.y
+        camData.zRot = movingCamera.rotation.z
+        camData.lookAt && movingCamera.lookAt(targetObj.position)
+      }
+    })
+    
+    // !camData.lookAt && gsap.to([movingCamera.rotation], {
+    //   duration: 2,
+    //   x: location.camRot[0],
+    //   y: location.camRot[1],
+    //   z: location.camRot[2],
+    // })
   }
 }

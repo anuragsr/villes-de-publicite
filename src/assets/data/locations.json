@@ -3,8 +3,8 @@
       {
          "name": "Centre Ville", "nameEn": "City Centre",
          "desc": "Some one liner about this location",
-         "targetPos": [162, 37, -7],
-         "camPos": [202, 25, -135],
+         "targetPos": [181.5, 41.5, 55.4],
+         "camPos": [177.8, 16.9, -87.5],
          "images": [
             {
                "url": "https://picsum.photos/id/11/900/500",
@@ -31,8 +31,8 @@
       {
          "name": "Zone Industrielle", "nameEn": "Industrial District",
          "desc": "Some one liner about this location too",
-         "targetPos": [120, 37, 45],
-         "camPos": [100, 150, 50],
+         "targetPos": [162.4, 41.5, 138.8],
+         "camPos": [210.3, 44.9, 220.7],
          "images": [
             {
                "url": "https://picsum.photos/id/211/900/500",
@@ -59,8 +59,8 @@
       {
          "name": "Centre Ville 2", "nameEn": "City Centre 2",
          "desc": "Some one liner about this location",
-         "targetPos": [0, 0, 0],
-         "camPos": [100, 100, 100],
+         "targetPos": [55.4, 50.1, 129.3],
+         "camPos": [75.2, 48, 186.8],
          "images": [
             {
                "url": "https://picsum.photos/id/11/900/500",
