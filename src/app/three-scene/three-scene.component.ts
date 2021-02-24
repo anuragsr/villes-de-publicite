@@ -828,7 +828,7 @@ export class ThreeSceneComponent implements OnInit {
 
           const gr = createBillBoard({
             name: 'Billboard Group 1 (Adidas)',
-            billboard: { mesh: bb, pos: [-137, 0, -30], rot: [0, -.57, 0] },
+            billboard: { mesh: bb, pos: [-137, 0, 35], rot: [0, -.57, 0] },
             plane: { scale: [160, 65, 0], pos: [0, 148, 8] },
             css: { scale: .27, id: 'bill1' }, scaleFactor: .2
           })
@@ -851,7 +851,7 @@ export class ThreeSceneComponent implements OnInit {
             css: { scale: .28, offset: [-.15, 0, 0], id: 'bill7' }, scaleFactor: .25
           })
           
-          // this.setCurrentMesh(gr3);
+          // this.setCurrentMesh(gr);
 
         })
       });
@@ -889,8 +889,8 @@ export class ThreeSceneComponent implements OnInit {
         const bb = obj.scene;
         bb.name = 'Billboard Animated';
         bb.scale.multiplyScalar(.08);
-        bb.position.set(38, 65, 200);
-        bb.rotation.set(0, -2.34, 0);
+        bb.position.set(-181, 65, -168);
+        bb.rotation.set(0, -.8, 0);
         this.introduce(bb);
 
         this.mixer = new THREE.AnimationMixer(bb);
@@ -900,18 +900,18 @@ export class ThreeSceneComponent implements OnInit {
         , action = this.mixer.clipAction(clip);
         action.play();
 
-        // Second billboard
-        const bb2 = bb.clone();
-        bb2.name = 'Billboard Animated 2';
-        bb2.position.set(-181, 65, -168);
-        bb2.rotation.set(0, -.8, 0);
-        this.introduce(bb2);
+        // // Second billboard
+        // const bb2 = bb.clone();
+        // bb2.name = 'Billboard Animated 2';
+        // bb2.position.set(-181, 65, -168);
+        // bb2.rotation.set(0, -.8, 0);
+        // this.introduce(bb2);
 
-        this.mixer2 = new THREE.AnimationMixer(bb2);
-        const clips2 = obj.animations
-        , clip2 = THREE.AnimationClip.findByName(clips2, 'Take 001' )
-        , action2 = this.mixer2.clipAction(clip2);
-        action2.play()
+        // this.mixer2 = new THREE.AnimationMixer(bb2);
+        // const clips2 = obj.animations
+        // , clip2 = THREE.AnimationClip.findByName(clips2, 'Take 001' )
+        // , action2 = this.mixer2.clipAction(clip2);
+        // action2.play()
       });
 
       mtl.load('assets/models/billboards/b4/untitled.mtl', materials => {
@@ -932,13 +932,15 @@ export class ThreeSceneComponent implements OnInit {
           })
           , gr2 = createBillBoard({
             name: 'Billboard Group 9 (Zeta Office)',
-            billboard: { mesh: bb.clone(), pos: [-188, 0, 28], rot: [0, 2.92, 0] },
+            billboard: { mesh: bb.clone(), pos: [-188, 0, 28], rot: [0, .2, 0] },
             plane: { scale: [109, 107, 0], pos: [0, 167.5, 8] },
             css: { scale: .17, id: 'bill9' }, scaleFactor: .3
           })
+
+          // this.setCurrentMesh(gr);
+
         })
       })
-
     }
 
     mgr.onError = url => { l('There was an error loading ' + url) };
@@ -962,8 +964,8 @@ export class ThreeSceneComponent implements OnInit {
     // l(location, "From service")
     const { movingCamera, targetObj } = this
     // Use the separate camera.
+    
     // this.currentCamera = this.movingCamera
-
     gsap.to([camData, movingCamera.position], {
       duration: 2,
       x: location.camPos[0],
