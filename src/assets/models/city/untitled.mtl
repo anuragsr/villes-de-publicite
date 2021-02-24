@@ -1,0 +1,224 @@
+# Blender MTL File: 'None'
+# Material Count: 21
+
+newmtl ac_units_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.112941 0.119216 0.125490
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl building_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro01.JPG
+
+newmtl building_10
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro10.JPG
+
+newmtl building_11
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro11.JPG
+
+newmtl building_12
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro12.JPG
+
+newmtl building_2
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro02.JPG
+
+newmtl building_3
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro03.JPG
+
+newmtl building_4
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro04.JPG
+
+newmtl building_5
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro05.JPG
+
+newmtl building_6
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro06.JPG
+
+newmtl building_7
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro07.JPG
+
+newmtl building_8
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro08.JPG
+
+newmtl building_9
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd E:\\3D\\Work Done\\villes-de-annotations\\src\\assets\\models\\city\\metro09.JPG
+
+newmtl default00
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.702745 0.702745 0.702745
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl freeway_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.436078 0.436078 0.436078
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl freeway_2
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.285490 0.285490 0.285490
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl lamp_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl pavement_2
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.363922 0.363922 0.363922
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl post_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.567843 0.567843 0.567843
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl stop_light_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.090980 0.090980 0.090980
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl street_sign_1
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.119216 0.122353 0.109804
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2

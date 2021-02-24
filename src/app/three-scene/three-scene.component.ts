@@ -486,7 +486,7 @@ export class ThreeSceneComponent implements OnInit {
       rendererCSS.render(sceneCSS, currentCamera);
 
       if (mixer) { mixer.update(clock.getDelta()) }
-      if (mixer2) { mixer2.update(clock.getDelta()) }
+      // if (mixer2) { mixer2.update(clock.getDelta()) }
       // movingCamera.lookAt(targetObj.position)
       mapOpts.rotateScene && (cameraParentOuter.rotation.y+= .001)
 
@@ -697,7 +697,7 @@ export class ThreeSceneComponent implements OnInit {
       })
       , gr5 = createBuildingAd({
         name: 'Building Ad Group 5 (Nation Hospice Month)',
-        plane: { scale: [16, 65.4, 0], pos: [69.1, 48.9, 50.8], rot: [0, Math.PI / 2, 0] },
+        plane: { scale: [16, 65.4, 0], pos: [69.8, 31.9, -5.3], rot: [0, Math.PI / 2, 0] },
         css: { scale: .07, id: 'buil5' }
       })
       , gr6 = createBuildingAd({
@@ -747,11 +747,11 @@ export class ThreeSceneComponent implements OnInit {
       })
       , gr15 = createBuildingAd({
         name: 'Building Ad Group 15 (Playforce)',
-        plane: { scale: [16.8, 58.9, 0], pos: [207.4, 32.8, 259.5], rot: [0, -Math.PI / 2, 0] },
+        plane: { scale: [16.8, 58.9, 0], pos: [246.4, 45.3, -193.5], rot: [0, 0, 0] },
         css: { scale: .07, id: 'buil15' }
       })
 
-      // this.setCurrentMesh(gr15)
+      // this.setCurrentMesh(gr5)
     }
     , createBillBoard = ({ name, billboard, plane, css, scaleFactor }) => {
       // l(name, billboard, plane, css, scaleFactor)
@@ -841,8 +841,8 @@ export class ThreeSceneComponent implements OnInit {
           , gr3 = createBillBoard({
             name: 'Billboard Group 6 (Nike)',
             billboard: { mesh: bb.clone(), pos: [155, 0, 0], rot: [0, 2.63, 0] },
-            plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
-            css: { scale: .28, offset: [-.15, 0, 0], id: 'bill6' }, scaleFactor: .3
+            plane: { scale: [128, 65, 0], pos: [0, 148, 8] },
+            css: { scale: .28, offset: [1, 0, 0], id: 'bill6' }, scaleFactor: .3
           })
           , gr4 = createBillBoard({
             name: 'Billboard Group 7 (KFC)',
@@ -852,7 +852,6 @@ export class ThreeSceneComponent implements OnInit {
           })
           
           // this.setCurrentMesh(gr);
-
         })
       });
 
@@ -866,7 +865,7 @@ export class ThreeSceneComponent implements OnInit {
 
         const gr = createBillBoard({
           name: 'Billboard Group 2 (Nike)',
-          billboard: { mesh: bb, pos: [166, 0, -150], rot: [0, -.63, 0] },
+          billboard: { mesh: bb, pos: [164.4, 0, -161.5], rot: [0, -.63, 0] },
           plane: { scale: [75, 44, 0], pos: [0, 100, 2] },
           css: { scale: .05, id: 'bill2' }, scaleFactor: .5
         })
@@ -882,6 +881,9 @@ export class ThreeSceneComponent implements OnInit {
           plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
           css: { scale: .14, id: 'bill5' }, scaleFactor: .65
         })
+
+        // this.setCurrentMesh(gr);
+
       });
 
       // Auto animated billboard
