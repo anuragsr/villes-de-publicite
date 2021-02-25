@@ -32,7 +32,7 @@
          "name": "Zone Industrielle", "nameEn": "Industrial District",
          "desc": "Some one liner about this location too",
          "targetPos": [162.4, 41.5, 138.8],
-         "camPos": [210.3, 44.9, 220.7],
+         "camPos": [224.6, 44.9, 246.4],
          "images": [
             {
                "url": "https://picsum.photos/id/211/900/500",
@@ -87,8 +87,8 @@
       {
          "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
          "desc": "Some one liner about this location too",
-         "targetPos": [-66.6, 30.9, 138],
-         "camPos": [-63.2, 33.9, 221.3],
+         "targetPos": [-123.4, 36.8, 162.1],
+         "camPos": [-83.8, 33.9, 104.9],
          "images": [
             {
                "url": "https://picsum.photos/id/211/900/500",

@@ -1,6 +1,6 @@
 <div class="ctn-carousel">
   <div class="carousel-single" 
-    *ngFor="let location of carousels"        
+    *ngFor="let location of carousels; let i = index;"        
     >
     <div class="overlay">
       <div class="ctn-chip">
@@ -11,16 +11,17 @@
           </mat-chip>
         </mat-chip-list>
       </div>
-      <button 
+      <!-- <button 
         mat-fab color="warn"
         matTooltip="Galerie | Gallery"
         [matTooltipShowDelay]="500"
         (click)="selectLocation(location, 'gallery')"
         >
         <mat-icon>collections</mat-icon><br/>
-      </button>
+      </button> -->
       <button 
-        mat-fab color="primary" 
+        [color]="i % 2 === 0 ? 'warn' : 'primary'"
+        mat-fab 
         matTooltip="Naviguer | Navigate"
         [matTooltipShowDelay]="500"
         (click)="selectLocation(location, 'map')"

@@ -14,7 +14,11 @@ import Stats from 'stats.js'
 import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
 
-interface Location { type: string }
+interface Location {
+  type: string
+  camPos: any
+  targetPos: any
+}
 
 let posData = { 
   x: 0, y: 0, z: 0, yRot : 0, scaleX: 1, scaleY: 1,
@@ -101,6 +105,7 @@ export class ThreeSceneComponent implements OnInit {
   cameraParentOuter: THREE.Mesh
   cameraParentInner: THREE.Mesh
   targetObj: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>
+  location: Location
   ngOnInit(): void {}
 
   // #endregion
@@ -108,7 +113,10 @@ export class ThreeSceneComponent implements OnInit {
   constructor(private locationService: LocationService) {
 
     this.locationService.locationSet$.subscribe((location: Location) => {
-      if (location.type === 'map') { this.showLocation(location) }
+      if (location.type === 'map') { 
+        this.location = location
+        this.showLocation() 
+      }
     });
 
     const w = window.innerWidth, h = window.innerHeight;
@@ -682,7 +690,7 @@ export class ThreeSceneComponent implements OnInit {
       })
       , gr2 = createBuildingAd({
         name: 'Building Ad Group 2 (Coke)',
-        plane: { scale: [17.1, 17.2, 0], pos: [-50, 33, 124], rot: [0, 0, 0] },
+        plane: { scale: [15.5, 17.2, 0], pos: [-105.2, 38, 193.7], rot: [0, -Math.PI, 0] },
         css: { scale: .07, id: 'buil2' }
       })
       , gr3 = createBuildingAd({
@@ -751,7 +759,7 @@ export class ThreeSceneComponent implements OnInit {
         css: { scale: .07, id: 'buil15' }
       })
 
-      // this.setCurrentMesh(gr5)
+      // this.setCurrentMesh(gr2)
     }
     , createBillBoard = ({ name, billboard, plane, css, scaleFactor }) => {
       // l(name, billboard, plane, css, scaleFactor)
@@ -834,7 +842,7 @@ export class ThreeSceneComponent implements OnInit {
           })
           , gr2 = createBillBoard({
             name: 'Billboard Group 4 (Converse)',
-            billboard: { mesh: bb.clone(), pos: [-90, 0, 137], rot: [0, -.36, 0] },
+            billboard: { mesh: bb.clone(), pos: [-160.2, 0, 180.9], rot: [0, 2.4, 0] },
             plane: { scale: [129, 65, 0], pos: [0, 148, 8] },
             css: { scale: .27, offset: [-.15, 0, 0], id: 'bill4' }, scaleFactor: .3
           })
@@ -851,7 +859,7 @@ export class ThreeSceneComponent implements OnInit {
             css: { scale: .28, offset: [-.15, 0, 0], id: 'bill7' }, scaleFactor: .25
           })
           
-          // this.setCurrentMesh(gr);
+          // this.setCurrentMesh(gr2);
         })
       });
 
@@ -877,12 +885,12 @@ export class ThreeSceneComponent implements OnInit {
         })
         , gr3 = createBillBoard({
           name: 'Billboard Group 5 (North Face)',
-          billboard: { mesh: bb.clone(), pos: [152, 0, 127], rot: [0, .52, 0] },
+          billboard: { mesh: bb.clone(), pos: [150, 0, 146], rot: [0, .52, 0] },
           plane: { scale: [80, 42, 0], pos: [0, 100, 2] },
           css: { scale: .14, id: 'bill5' }, scaleFactor: .65
         })
 
-        // this.setCurrentMesh(gr);
+        this.setCurrentMesh(gr3);
 
       });
 
@@ -962,9 +970,9 @@ export class ThreeSceneComponent implements OnInit {
     })()
   }
 
-  showLocation(location){
+  showLocation(){
     // l(location, "From service")
-    const { movingCamera, targetObj } = this
+    const { location, movingCamera, targetObj } = this
     // Use the separate camera.
     
     // this.currentCamera = this.movingCamera
