@@ -118,8 +118,13 @@
       </div>
     </div>  
   </div>
-  <div class="info" *ngIf="location">
-    {{ location.name }} <i>{{ location.nameEn }}</i>
+  <div class="info">
+    {{ location.name }}
+    <div class="inner">{{ location.nameEn }}</div>
+  </div>
+  <div class="desc">
+    {{ location.desc }}
+    <div class="inner">{{ location.descEn }}</div>
   </div>
 </div>
 <div id="ctn-css3D">

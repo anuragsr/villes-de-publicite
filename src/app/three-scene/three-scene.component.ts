@@ -16,8 +16,12 @@ import { l } from '../helpers/common'
 
 interface Location {
   type: string
-  camPos: any
-  targetPos: any
+  camPos?: any
+  targetPos?: any
+  name: string
+  nameEn: string
+  desc: string
+  descEn: string
 }
 
 let posData = { 
@@ -105,7 +109,7 @@ export class ThreeSceneComponent implements OnInit {
   cameraParentOuter: THREE.Mesh
   cameraParentInner: THREE.Mesh
   targetObj: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial>
-  location: Location
+  location: Location = { type: "", name: "", nameEn: "", desc: "", descEn: ""}
   ngOnInit(): void {}
 
   // #endregion
@@ -973,16 +977,19 @@ export class ThreeSceneComponent implements OnInit {
   showLocation(){
     // l(location, "From service")
     const { location, movingCamera, targetObj } = this
-    // Use the separate camera.
     
-    // this.currentCamera = this.movingCamera
-    gsap.to([camData, movingCamera.position], {
+    // Use the separate camera.
+    this.currentCamera = this.movingCamera
+    
+    gsap.timeline()
+    .to([".ctn-three .info", ".ctn-three .desc"], { duration: 0, opacity: 0 }, "lb0")
+    .to([camData, movingCamera.position], {
       duration: 2,
       x: location.camPos[0],
       y: location.camPos[1],
       z: location.camPos[2],
-    })
-    gsap.to([posData, targetObj.position], {
+    }, "lb0")
+    .to([posData, targetObj.position], {
       duration: 2,
       x: location.targetPos[0],
       y: location.targetPos[1],
@@ -1007,7 +1014,10 @@ export class ThreeSceneComponent implements OnInit {
         camData.zRot = movingCamera.rotation.z
         camData.lookAt && movingCamera.lookAt(targetObj.position)
       }
-    })
+    }, "lb0")
+    .to(".ctn-three .info", { duration: 1, opacity: 1 }, "lb0")
+    .to(".ctn-three .desc", { duration: 1, opacity: 1 }, "lb0+=1")
+
     
     // !camData.lookAt && gsap.to([movingCamera.rotation], {
     //   duration: 2,

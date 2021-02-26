@@ -2,7 +2,8 @@
    "locations":   [
       {
          "name": "Communautés planifiées", "nameEn": "Planned Communities",
-         "desc": "Some one liner about this location",
+         "desc": "Cette section de la ville est composée de communautés bien planifiées, comprenant des ménages aisés",
+         "descEn": "This section of the city is composed of well planned communities, comprising of well-to-do households",
          "targetPos": [181.5, 41.5, 55.4],
          "camPos": [177.8, 16.9, -87.5],
          "images": [
@@ -30,7 +31,8 @@
       },
       {
          "name": "Quartier Industrielle", "nameEn": "Industrial District",
-         "desc": "Some one liner about this location too",
+         "desc": "Le quartier industriel possède la plupart des grandes industries de cette ville, ce qui lui donne son nom.",
+         "descEn": "The industrial district has most of the major industries in this city, giving it the name.",
          "targetPos": [162.4, 41.5, 138.8],
          "camPos": [224.6, 44.9, 246.4],
          "images": [
@@ -58,7 +60,8 @@
       },
       {
          "name": "Centre Ville", "nameEn": "City Centre",
-         "desc": "Some one liner about this location",
+         "desc": "C'est le centre-ville, une plaque tournante majeure pour la plupart des affaires qui se produisent dans cette ville.",
+         "descEn": "This is the city center, a major hub for most of the business that occurs in this city.",
          "targetPos": [55.4, 50.1, 129.3],
          "camPos": [75.2, 48, 186.8],
          "images": [
@@ -86,7 +89,8 @@
       },
       {
          "name": "Zone Suburbaine", "nameEn": "Suburban Area",
-         "desc": "Some one liner about this location too",
+         "desc": "La banlieue, bien que proche de la mer, représente les régions périphériques de la ville.",
+         "descEn": "The suburban area, while close to sea, represents the outlying regions of the city.",
          "targetPos": [-123.4, 36.8, 162.1],
          "camPos": [-83.8, 33.9, 104.9],
          "images": [
@@ -114,7 +118,8 @@
       },
       {
          "name": "Bloc de bord de mer", "nameEn": "Seaside Block",
-         "desc": "Some one liner about this location",
+         "desc": "Le bloc balnéaire est l'un des endroits les plus recherchés de la ville, principalement pour les stations balnéaires et les hôtels.",
+         "descEn": "The seaside block, is one of the most sought after locations in the city, mainly for resorts and hotels.",
          "targetPos": [-119.5, 30.9, -39],
          "camPos": [-179.5, 33.9, 155.2],
          "images": [
@@ -142,7 +147,8 @@
       },
       {
          "name": "Centre d'affaires", "nameEn": "Business Center",
-         "desc": "Some one liner about this location too",
+         "desc": "Cette zone de la ville compte de nombreuses petites et moyennes entreprises, ainsi que des marchés très fréquentés.",
+         "descEn": "This area of the city has a lot of small and medium sized businesses, along with busy markets.",
          "targetPos": [-87.1, 10.5, -33.9],
          "camPos": [-248.6, 71.6, -85.1],
          "images": [
@@ -170,7 +176,8 @@
       },
       {
          "name": "Faubourgs", "nameEn": "Outskirts",
-         "desc": "Some one liner about this location",
+         "desc": "Les banlieues de la ville abritent certaines des plus petites habitations, qui abritent la classe ouvrière.",
+         "descEn": "Outskirts of the city are home to some of the smaller dwellings, which house the labour class.",
          "targetPos": [-232.4, 31.9, -196.7],
          "camPos": [-120.5, 71.6, -85.1],
          "images": [
@@ -198,7 +205,8 @@
       },
       {
          "name": "Place Commerciale", "nameEn": "Commercial Plaza",
-         "desc": "Some one liner about this location too",
+         "desc": "La place commerciale abrite la plupart des bureaux importants des grandes entreprises de la ville.",
+         "descEn": "The commercial plaza houses most of the important offices of big companies from around the city.",
          "targetPos": [0, 41.6, -60.5],
          "camPos": [22.8, 84.6, -183.8],
          "images": [
@@ -226,7 +234,8 @@
       },
       {
          "name": "Autoroute", "nameEn": "Autobahn",
-         "desc": "Some one liner about this location",
+         "desc": "Cette autoroute traverse la ville, reliant ses principales parties au transport à grande vitesse.",
+         "descEn": "This highway runs through the city, connecting its major parts with high speed transport.",
          "targetPos": [-65.4, 27.8, -160.9],
          "camPos": [67.4, 29.4, -149.3],
          "images": [
@@ -253,8 +262,9 @@
          ]
       },
       {
-         "name": "Zone Industrielle 2", "nameEn": "Industrial District 2",
-         "desc": "Some one liner about this location too",
+         "name": "Tour du Ciel Contourne", "nameEn": "SkyTower Bypass",
+         "desc": "Ce contournement a une importance historique en tant que première grande route à proximité du premier gratte-ciel de la ville.",
+         "descEn": "This bypass has historical significance as the first major road near the first skyscraper in the city.",
          "targetPos": [199.1, 33.1, -178.9],
          "camPos": [116.8, 60.1, -68.7],
          "images": [
@@ -281,8 +291,9 @@
          ]
       },
       {
-         "name": "Centre Ville 2", "nameEn": "City Centre 2",
-         "desc": "Some one liner about this location",
+         "name": "Centre du Commerce Mondial", "nameEn": "World Trade Center",
+         "desc": "Il s'agit du bâtiment le plus important de la ville, abritant des bureaux multinationaux et la bourse.",
+         "descEn": "This is the most important building in the city, housing multinational offices and the stock exchange.",
          "targetPos": [76.9, 51.8, -42.2],
          "camPos": [187, 92.2, -86.9],
          "images": [
