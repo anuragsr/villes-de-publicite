@@ -8,7 +8,7 @@
          "camPos": [177.8, 16.9, -87.5],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/plan-comm.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -30,14 +30,14 @@
          ]
       },
       {
-         "name": "Quartier Industrielle", "nameEn": "Industrial District",
-         "desc": "Le quartier industriel possède la plupart des grandes industries de cette ville, ce qui lui donne son nom.",
-         "descEn": "The industrial district has most of the major industries in this city, giving it the name.",
+         "name": "Intersection d'autoroute", "nameEn": "Highway Intersection",
+         "desc": "Cette intersection majeure permet une circulation fluide pour les véhicules entrant et sortant de la ville.",
+         "descEn": "This major intersection allows for smooth traffic flow for vehicles entering and leaving the city.",
          "targetPos": [162.4, 41.5, 138.8],
          "camPos": [224.6, 44.9, 246.4],
          "images": [
             {
-               "url": "https://picsum.photos/id/211/900/500",
+               "url": "assets/bg/high-int.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -66,7 +66,7 @@
          "camPos": [75.2, 48, 186.8],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/city-center.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -95,7 +95,7 @@
          "camPos": [-83.8, 33.9, 104.9],
          "images": [
             {
-               "url": "https://picsum.photos/id/211/900/500",
+               "url": "assets/bg/sub-zone.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -124,7 +124,7 @@
          "camPos": [-179.5, 33.9, 155.2],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/sea-side.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -153,7 +153,7 @@
          "camPos": [-248.6, 71.6, -85.1],
          "images": [
             {
-               "url": "https://picsum.photos/id/211/900/500",
+               "url": "assets/bg/bus-centre.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -182,7 +182,7 @@
          "camPos": [-120.5, 71.6, -85.1],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/outskirts.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -205,13 +205,13 @@
       },
       {
          "name": "Place Commerciale", "nameEn": "Commercial Plaza",
-         "desc": "La place commerciale abrite la plupart des bureaux importants des grandes entreprises de la ville.",
-         "descEn": "The commercial plaza houses most of the important offices of big companies from around the city.",
+         "desc": "La place commerciale est la destination idéale pour tous les besoins de shopping et de loisirs de la ville.",
+         "descEn": "The commercial plaza is the destination to be for all shopping and leisure needs of the city.",
          "targetPos": [0, 41.6, -60.5],
          "camPos": [22.8, 84.6, -183.8],
          "images": [
             {
-               "url": "https://picsum.photos/id/211/900/500",
+               "url": "assets/bg/shoppingmall.jpeg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -240,7 +240,7 @@
          "camPos": [67.4, 29.4, -149.3],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/autobahn.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -269,7 +269,7 @@
          "camPos": [116.8, 60.1, -68.7],
          "images": [
             {
-               "url": "https://picsum.photos/id/211/900/500",
+               "url": "assets/bg/sky-tower.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
@@ -298,7 +298,7 @@
          "camPos": [187, 92.2, -86.9],
          "images": [
             {
-               "url": "https://picsum.photos/id/11/900/500",
+               "url": "assets/bg/trade-center.jpg",
                "title": "This is a title",
                "subtitle": "Nulla vitae elit libero, a pharetra augue mollis interdum."
             },
