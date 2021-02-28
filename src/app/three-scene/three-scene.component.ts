@@ -283,7 +283,7 @@ export class ThreeSceneComponent implements OnInit {
     folderC.add(params, 'movingCamera').onChange(() => { this.currentCamera = this.movingCamera });
     // folderC.add(params, 'calibrateCameras').onChange(this.calibrateCameras.bind(this));
     folderC.add(camData, 'lookAt')
-    folderC.open();
+    // folderC.open();
 
     const folder = gui.addFolder('Current Mesh');
     folder.add(posData, 'x', -500, 500, .1).onChange(() => this.updateMesh()).listen();
@@ -293,7 +293,7 @@ export class ThreeSceneComponent implements OnInit {
     // folder.add(posData, 'scaleY', -200, 200, .1).onChange(() => this.updateMesh()).listen();
     // folder.add(posData, 'yRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMesh()).listen();
     folder.add(posData, 'copy')
-    folder.open();
+    // folder.open();
 
     const folder2 = gui.addFolder('Moving Camera');
     folder2.add(camData, 'x', -500, 500, .1).onChange(() => this.updateMovingCamera()).listen();
@@ -304,7 +304,7 @@ export class ThreeSceneComponent implements OnInit {
     folder2.add(camData, 'zRot', -Math.PI, Math.PI, .01).onChange(() => this.updateMovingCamera()).listen();
     folder2.add(camData, 'copy')
     folder2.add(camData, 'copyRot')
-    folder2.open();
+    // folder2.open();
   }
 
   toggleHelpers(val) {
@@ -319,6 +319,7 @@ export class ThreeSceneComponent implements OnInit {
       scene.add(movingCameraHelper);
       stats.showPanel(0)
       this.cameraParentOuter.visible = true
+      this.targetObj.visible = true
     } else{
       scene.remove(gridHelper);
       scene.remove(axesHelper);
@@ -326,6 +327,7 @@ export class ThreeSceneComponent implements OnInit {
       scene.remove(movingCameraHelper);
       stats.showPanel(-1)
       this.cameraParentOuter.visible = false
+      this.targetObj.visible = false
     }
   }
 

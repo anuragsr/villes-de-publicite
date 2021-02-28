@@ -14,13 +14,22 @@
     text-align: right;
     overflow: hidden;
     .bg{ 
+      position: relative;
+      left: 25px;
       transition: height .3s;
       background: rgba($b, .6); 
       height: 385px;
-      &.closed{ height: 35px; }
+      width: 160px;
+      &.closed{ 
+        height: 35px; 
+        .inner{ height: 0; }
+      }
     }
     .inner{
       // outline: 1px solid yellow;
+      overflow: hidden;
+      height: 350px;
+      transition: height .3s;
       button{ 
         margin: 5px; 
         &.plh{ visibility: hidden; }
@@ -63,4 +72,38 @@
   @include pa(0, 0);
   // height: 1px;
   // width: auto;
+}
+
+#ctn-about{
+  // @include pa(30, "", "", 30);
+  // z-index: 1;
+  background: rgba($b, .6);
+  padding: 10px;
+  border-radius: 2px;
+  color: $w;
+  transition: all .3s;
+  margin-top: 10px;
+  h2{ 
+    margin: 0; 
+    font-weight: 400; 
+    font-size: 18px;
+  }
+  div{
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 10px;
+    a{ color: $w; &:hover{ text-decoration: none; } }
+    & ~ a{ text-decoration: none; }
+  }
+  img{ 
+    height: 25px; 
+    margin-right: 10px;
+    opacity: .8;
+    transition: all .3s;
+    &.last{ margin-right: 0; }
+    &:hover{
+      opacity: 1;
+      transform: rotate(10deg) scale(1.25);
+    }
+  }
 }
