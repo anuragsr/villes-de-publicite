@@ -29,7 +29,11 @@
       <div class="inner">
         <div class="item">
           <mat-label class="mat-label">Rotate Scene</mat-label>
-          <mat-slide-toggle color="warn" [(ngModel)]="mapOpts.rotateScene"></mat-slide-toggle>
+          <mat-slide-toggle 
+            color="warn" 
+            [(ngModel)]="mapOpts.rotateScene"
+            [disabled]="currentCamera.name !== 'rotating'"
+          ></mat-slide-toggle>
         </div>
         <div class="item">
           <mat-label class="mat-label">Greyscale</mat-label>
@@ -41,6 +45,7 @@
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'left'"
             (click)="navigateCamera('rotate', 'left')"
+            [disabled]="currentCamera.name !== 'rotating'"
             >
             <mat-icon>undo</mat-icon>
           </button>
@@ -49,6 +54,7 @@
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'right'"
             (click)="navigateCamera('rotate', 'right')"
+            [disabled]="currentCamera.name !== 'rotating'"
             >
             <mat-icon>redo</mat-icon>
           </button>
@@ -59,6 +65,7 @@
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'left'"
             (click)="navigateCamera('zoom', 'in')"
+            [disabled]="currentCamera.name !== 'rotating'"
             >
             <mat-icon>zoom_in</mat-icon>
           </button>
@@ -67,6 +74,7 @@
             [matTooltipShowDelay]="100"
             [matTooltipPosition]="'right'"
             (click)="navigateCamera('zoom', 'out')"
+            [disabled]="currentCamera.name !== 'rotating'"
             >
             <mat-icon>zoom_out</mat-icon>
           </button>

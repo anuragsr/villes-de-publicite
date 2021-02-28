@@ -10,6 +10,7 @@ import { CSS3DRenderer, CSS3DObject, CSS3DSprite } from 'three/examples/jsm/rend
 import gsap from 'gsap'
 import * as dat from 'dat.gui'
 import Stats from 'stats.js'
+import NProgress from 'nprogress'
 
 import { LocationService } from '../services/location.service'
 import { l } from '../helpers/common'
@@ -69,6 +70,8 @@ const rd = num => Math.round((num + Number.EPSILON) * 100) / 100
     }
   }
 }
+
+NProgress.start()
 
 @Component({
   selector: 'app-three-scene',
@@ -163,7 +166,9 @@ export class ThreeSceneComponent implements OnInit {
     this.orbitCamera = new THREE.PerspectiveCamera(45, w / h, 1, 3000);
     this.orbitCamera.name = 'orbit';
     this.initMapControls();
-    this.currentCamera = this.orbitCamera;
+    // this.currentCamera = this.orbitCamera;
+    this.currentCamera = this.camera;
+
     this.targetObj = new THREE.Mesh(
       new THREE.SphereGeometry(5, 2, 2),
       new THREE.MeshStandardMaterial({ color: 0xff0000, wireframe: true })
@@ -250,7 +255,6 @@ export class ThreeSceneComponent implements OnInit {
     scene.add(movingCamera);
 
     this.setCurrentMesh(targetObj);
-    // camera.lookAt(targetObj.position);
 
     cameraParentInner.rotation.y = Math.PI
     cameraParentInner.rotation.x = -Math.PI/4
@@ -453,7 +457,7 @@ export class ThreeSceneComponent implements OnInit {
             tl.to(cameraParentOuter.rotation, { duration: .5, y: 0 }, "lb0")
             tl.to(cameraParentInner.rotation, { duration: .5, x: 0 }, "lb0")
             break;
-          }
+        }
         break;
     }
   }
@@ -959,6 +963,7 @@ export class ThreeSceneComponent implements OnInit {
       })
     }
 
+    mgr.onProgress = (u, i, t) => { l(i / t); NProgress.set(i / t); };
     mgr.onError = url => { l('There was an error loading ' + url) };
     mgr.onLoad = () => { l('All models loaded') };
 
@@ -981,6 +986,7 @@ export class ThreeSceneComponent implements OnInit {
     const { location, movingCamera, targetObj } = this
     
     // Use the separate camera.
+    this.mapOpts.rotateScene = false
     this.currentCamera = this.movingCamera
     
     gsap.timeline()
@@ -1019,7 +1025,6 @@ export class ThreeSceneComponent implements OnInit {
     }, "lb0")
     .to(".ctn-three .info", { duration: 1, opacity: 1 }, "lb0")
     .to(".ctn-three .desc", { duration: 1, opacity: 1 }, "lb0+=1")
-
     
     // !camData.lookAt && gsap.to([movingCamera.rotation], {
     //   duration: 2,
