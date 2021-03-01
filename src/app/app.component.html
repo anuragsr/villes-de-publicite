@@ -1,37 +1,40 @@
-<div id="overlay" class="">
-  <!-- <img class="loader" src="assets/images/loading.gif" /> -->
-  <div>
-    <h1>3D rendering of an Industrial Siteplan</h1>
-  </div>
+<div id="overlay" class="d-flex flex-y">
+  <div class="bg"></div>
+  <h1>Ville de Publicités</h1>
   <div class="flex-x intro-parent">
-    <div>
-      <div class="flex-x item-image">
-        <img class="icon" src="assets/images/browsers.png" />
-        <h2>Works best in Google Chrome / Microsoft Edge</h2>
-      </div>
-      <div class="flex-x item-image">
-        <img class="icon" src="assets/images/wheel.png" />
-        <h2>Use mouse wheel to zoom in / out</h2>
-      </div>
+    <p>
+      <b>Les publicités nous entourent. Des bâtiments aux panneaux. À partir des médias, imprimez sur le Web.      </b>
+      <br/><i>Advertisements surround us. From buildings, to hoardings. From media, print to the web.</i>
+    </p>
+    <p>
+      <b>Il s'agit d'une visualisation d'une ville ornée de publicités et de publicité à chaque coin de rue.</b>
+      <br/><i>This is a visualization of a city adorned with advertisements and publicity in every corner.</i>      
+    </p>
+    <p>
+      <b>Vous pouvez naviguer à travers ses différents emplacements et explorer les publicités qu'ils contiennent.</b>
+      <br/><i>You can navigate through its various locations and explore the advertisements in them.</i>
+    </p>
+    <p>
+      <b>Construit avec Angular 11 et three.js</b>
+      <br/><i>Built using Angular 11 and three.js</i>
+    </p>
+    <div class="flex-x item-image">
+      <span class="material-icons">3d_rotation</span>
+      <b>Utilisez les commandes de la carte pour naviguer dans la vue</b>&nbsp;
+      <i>Use map controls to navigate the view</i>
     </div>
-    <div>
-      <div class="flex-x item-image">
-        <img class="icon" src="assets/images/drag.png" />
-        <h2>Click and drag mouse to rotate the scene</h2>
-      </div>
-      <div class="flex-x item-image">
-        <img class="icon" src="assets/images/settings.png" />
-        <h2>Try out various configurations</h2>
-      </div>
+    <div class="flex-x item-image">
+      <span class="material-icons">near_me</span>
+      <b>Cliquez sur les boutons de navigation sur les vignettes d'emplacement</b>&nbsp;
+      <i>Click navigation buttons on the location thumbnails</i>
+    </div>
+    <div class="flex-x item-image">
+      <img class="icon" src="assets/images/browsers.png" />
+      <b>Fonctionne mieux dans Google Chrome / Microsoft Edge</b>&nbsp;
+      <i>Works best in Google Chrome / Microsoft Edge</i>
     </div>
   </div>
-  <!-- onClick={()=> {
-    document.getElementById("overlay").classList.add("closed")
-  }} -->
-  <button id="enter" class="button smoke">
-    ENTER
-    <!-- <div><span>E</span><span>n</span><span>t</span><span>e</span><span>r</span></div> -->
-  </button>
+  <button id="enter" (click)="enterScene()" mat-raised-button color="warn">ENTER</button>
 </div>
 <div class="outer">
   <mat-grid-list cols="6" rowHeight="100vh">

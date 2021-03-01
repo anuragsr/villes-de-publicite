@@ -1,6 +1,8 @@
 $bg: #21252b;
 $bg-l: #e7e7e7;
 
+$acc: #c2185b;
+
 $w: #fff;
 $b: #000;
 
@@ -15,6 +17,10 @@ $breakpoints: (
   // 'ld': 1600px,
   // 'uhd': 2000px
 ) !default;
+
+.d-flex{ display: flex; }
+.flex-x{ flex-direction: row; }
+.flex-y{ flex-direction: column; }
 
 // Overflow hidden
 %oh{ overflow: hidden; }

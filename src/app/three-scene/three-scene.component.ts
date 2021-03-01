@@ -126,6 +126,8 @@ export class ThreeSceneComponent implements OnInit {
       }
     });
 
+    this.locationService.doEnter$.subscribe(() => { this.enterScene() });
+
     const w = window.innerWidth, h = window.innerHeight;
 
     this.camera = new THREE.PerspectiveCamera(45, w / h, 1, 800);
@@ -205,8 +207,8 @@ export class ThreeSceneComponent implements OnInit {
     // Initialize the scene
     this.initScene();
     // Uncomment below 2 lines for testing
-    show = true;
-    this.initGUI();
+    // show = true;
+    // this.initGUI();
     this.toggleHelpers(show);
     this.addListeners();
     this.resize();
@@ -264,6 +266,7 @@ export class ThreeSceneComponent implements OnInit {
     cameraParentOuter.rotation.y = Math.PI/2
     
     scene.add(cameraParentOuter)
+    this.navigateCamera('position', 'TOP')
   }
 
   initGUI(){
@@ -963,9 +966,13 @@ export class ThreeSceneComponent implements OnInit {
       })
     }
 
-    mgr.onProgress = (u, i, t) => { l(i / t); NProgress.set(i / t); };
-    mgr.onError = url => { l('There was an error loading ' + url) };
-    mgr.onLoad = () => { l('All models loaded') };
+    mgr.onProgress = (u, i, t) => { NProgress.set(i / t) }
+    mgr.onError = url => { l('There was an error loading ' + url) }
+    mgr.onLoad = () => { 
+      l('All models loaded') 
+      document.getElementById("enter").classList.add("open")
+      //  this.enterScene()
+    }
 
     (() => {
       // // Mesh for test
@@ -1032,5 +1039,12 @@ export class ThreeSceneComponent implements OnInit {
     //   y: location.camRot[1],
     //   z: location.camRot[2],
     // })
+  }
+
+  enterScene(){
+    document.getElementById("overlay").classList.add("closed")
+    setTimeout(() => {
+      this.navigateCamera('position', 'NORTH')
+    }, 1000)
   }
 }

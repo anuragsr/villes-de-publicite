@@ -1,7 +1,8 @@
 /* tslint:disable:semicolon */
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { LocationService } from './services/location.service'
+import gsap from 'gsap'
 import { l } from './helpers/common'
 
 @Component({
@@ -10,7 +11,7 @@ import { l } from './helpers/common'
   styleUrls: ['./app.component.scss'],
   providers: [LocationService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   carouselsLeft: any[]
   carouselsRight: any[]
   location: object
@@ -33,7 +34,16 @@ export class AppComponent {
     })
   }
 
-  broadcast() {
-    this.locationService.setLocation(this.location)
+  broadcast() { this.locationService.setLocation(this.location) }
+
+  enterScene() { this.locationService.enterDo() }
+
+  ngOnInit(){ 
+    gsap.to([".intro-parent p", ".intro-parent .item-image"], {
+      delay: 3,
+      duration: 3,
+      opacity: 1,
+      stagger: 4
+    })
   }
 }

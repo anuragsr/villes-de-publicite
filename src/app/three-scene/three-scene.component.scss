@@ -77,12 +77,12 @@
 #ctn-about{
   // @include pa(30, "", "", 30);
   // z-index: 1;
-  background: rgba($b, .6);
+  background: rgba($b, .8);
   padding: 10px;
   border-radius: 2px;
   color: $w;
   transition: all .3s;
-  margin-top: 10px;
+  margin-top: 5px;
   h2{ 
     margin: 0; 
     font-weight: 400; 
