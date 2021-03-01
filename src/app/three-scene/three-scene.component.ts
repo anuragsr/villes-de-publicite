@@ -970,7 +970,7 @@ export class ThreeSceneComponent implements OnInit {
     mgr.onError = url => { l('There was an error loading ' + url) }
     mgr.onLoad = () => { 
       l('All models loaded') 
-      document.getElementById("enter").classList.add("open")
+      document.querySelector(".outer").classList.add("open")
       //  this.enterScene()
     }
 

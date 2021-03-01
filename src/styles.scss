@@ -63,14 +63,17 @@ body {
   h1{ 
     font-size: 3vw; 
     color: $b; 
-    margin-bottom: 50px;
+    +p{ font-size: 24px; color: $b; margin-bottom: 25px; }
   }
   .intro-parent{
     position: relative;
     left: 1.25vw;
     justify-content: center;
     align-items: center;
-    p{ opacity: 0; }
+    p{ 
+      opacity: 0; 
+      transform: translateX(3vw);
+    }
     b, i{ color: $b; }
     .item-image{
       opacity: 0;
@@ -83,6 +86,5 @@ body {
   }
   #enter{
     opacity: 0;
-    &.open{ opacity: 1; }
   }
 }

@@ -39,11 +39,11 @@ export class AppComponent implements OnInit{
   enterScene() { this.locationService.enterDo() }
 
   ngOnInit(){ 
-    gsap.to([".intro-parent p", ".intro-parent .item-image"], {
+    gsap.to([".intro-parent p", ".intro-parent .item-image", "#enter"], {
       delay: 3,
       duration: 3,
       opacity: 1,
-      stagger: 4
+      stagger: 5
     })
   }
 }

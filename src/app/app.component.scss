@@ -1,6 +1,8 @@
 @import '../scss/common';
 .outer{
   background: $bg-l;
+  opacity: 0;
+  &.open{ opacity: 1; }
   //  background: $bg;
   // background: lightpink;
   // box-shadow: inset 0px 0px 15px 4px rgba($b, .5);
