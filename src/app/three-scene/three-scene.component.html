@@ -2,8 +2,8 @@
 <div class="ctn-three" #rendererContainer [ngClass]="{'grey': mapOpts.greyScale}">
   <div class="controls">
     <div class="item fs">
-      <button mat-mini-fab color="warn" 
-        matTooltip="Plein écran | Full Screen" 
+      <button mat-mini-fab color="warn"
+        matTooltip="Plein écran | Full Screen"
         [matTooltipShowDelay]="100"
         [matTooltipPosition]="'left'"
         (click)="toggleFullscreen('open')"
@@ -11,8 +11,8 @@
         >
         <mat-icon>zoom_out_map</mat-icon>
       </button>
-      <button mat-mini-fab color="warn" 
-        matTooltip="Sortir | Exit" 
+      <button mat-mini-fab color="warn"
+        matTooltip="Sortir | Exit"
         [matTooltipShowDelay]="100"
         [matTooltipPosition]="'left'"
         (click)="toggleFullscreen('')"
@@ -125,27 +125,59 @@
         </div>
       </div>
     </div>
-    <div id="ctn-about">
-      <h2>Villes de Publicités</h2>
-      <div>by&nbsp;
-        <a href="http://envisagecyberart.in" target="_blank">Anurag Srivastava</a><br />
-        <a href="http://envisagecyberart.in/projects/threejs-experiments" target="_blank">More 3D projects</a>
-      </div>
-      <a href="https://www.upwork.com/o/profiles/users/~01d929751d145a05ea/" target="_blank">
-        <img src="assets/images/upwork.png" alt="" />
-      </a>
-      <a href="https://www.guru.com/freelancers/anurag-srivastava-27" target="_blank">
-        <img src="assets/images/guru.png" alt="" />
-      </a>
-      <a href="mailto:anurag.131092@gmail.com&Subject=New Work Proposal">
-        <img src="assets/images/gmail.png" alt="" />
-      </a>
-      <a href="https://stackoverflow.com/users/7867822/anurag-srivastava" target="_blank">
-        <img src="assets/images/so.png" alt="" />
-      </a>
-      <a href="https://github.com/anuragsr" target="_blank">
-        <img class="last" src="assets/images/github.png" alt="" />
-      </a>
+  </div>
+  <div id="ctn-about">
+    <h2>Villes de Publicités</h2>
+    <div>by&nbsp;
+      <a href="http://envisagecyberart.in" target="_blank">Anurag Srivastava</a><br />
+      <a href="http://envisagecyberart.in/projects/threejs-experiments" target="_blank">More 3D projects</a>
+    </div>
+    <a href="https://www.upwork.com/o/profiles/users/~01d929751d145a05ea/" target="_blank">
+      <img src="assets/images/upwork.png" alt="" />
+    </a>
+    <a href="https://www.guru.com/freelancers/anurag-srivastava-27" target="_blank">
+      <img src="assets/images/guru.png" alt="" />
+    </a>
+    <a href="mailto:anurag.131092@gmail.com&Subject=New Work Proposal">
+      <img src="assets/images/gmail.png" alt="" />
+    </a>
+    <a href="https://stackoverflow.com/users/7867822/anurag-srivastava" target="_blank">
+      <img src="assets/images/so.png" alt="" />
+    </a>
+    <a href="https://github.com/anuragsr" target="_blank">
+      <img class="last" src="assets/images/github.png" alt="" />
+    </a>
+  </div>
+  <div class="weather-panel">
+    <div class="title">Change Weather</div>
+    <div class="buttons">
+      <button mat-mini-fab class="btn-sunny"
+        matTooltip="Ensoleillé | Sunny"
+        [matTooltipShowDelay]="100"
+        [matTooltipPosition]="'below'"
+        (click)="setWeather('sunny')"
+        [class.active]="mapOpts.weather === 'sunny'"
+        >
+        <mat-icon>wb_sunny</mat-icon>
+      </button>
+      <button mat-mini-fab class="btn-rainy"
+        matTooltip="Pluvieux | Rainy"
+        [matTooltipShowDelay]="100"
+        [matTooltipPosition]="'below'"
+        (click)="setWeather('rainy')"
+        [class.active]="mapOpts.weather === 'rainy'"
+        >
+        <mat-icon>grain</mat-icon>
+      </button>
+      <button mat-mini-fab class="btn-foggy"
+        matTooltip="Brumeux | Foggy"
+        [matTooltipShowDelay]="100"
+        [matTooltipPosition]="'below'"
+        (click)="setWeather('foggy')"
+        [class.active]="mapOpts.weather === 'foggy'"
+        >
+        <mat-icon>cloud</mat-icon>
+      </button>
     </div>
   </div>
   <div class="info">
@@ -157,7 +189,7 @@
     <div class="inner">{{ location.descEn }}</div>
   </div>
 </div>
-<div id="ctn-css3D">
+<div id="ctn-css3D" [ngClass]="'weather-' + mapOpts.weather">
   <img class="css3d" id="bill1" src="assets/gifs/billboards/adidas1.gif" alt=""/>
   <img class="css3d" id="bill2" src="assets/gifs/billboards/nike1.gif" alt=""/>
   <img class="css3d" id="bill3" src="assets/gifs/billboards/coke1.gif" alt=""/>

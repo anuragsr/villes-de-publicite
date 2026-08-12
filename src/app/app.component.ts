@@ -38,12 +38,15 @@ export class AppComponent implements OnInit{
 
   enterScene() { this.locationService.enterDo() }
 
-  ngOnInit(){ 
+  ngOnInit(){
     gsap.to([".intro-parent p", ".intro-parent .item-image", "#enter"], {
       delay: 3,
       duration: 3,
       opacity: 1,
       stagger: 5
     })
+
+    // DEV: skip intro overlay so changes are visible immediately
+    this.enterScene()
   }
 }

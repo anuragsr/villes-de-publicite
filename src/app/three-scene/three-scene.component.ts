@@ -99,6 +99,11 @@ export class ThreeSceneComponent implements OnInit {
   mixer: THREE.AnimationMixer;
   mixer2: THREE.AnimationMixer;
   currentMesh: THREE.Object3D;
+  ambientLight: THREE.AmbientLight;
+  fog: THREE.Fog;
+  sunGlow: THREE.Sprite;
+  rain: THREE.Points;
+  lightningTimer: any;
 
   clock = new THREE.Clock();
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -183,6 +188,18 @@ export class ThreeSceneComponent implements OnInit {
       new THREE.MeshPhongMaterial({ color: 0xffff00 })
     );
 
+    this.sunGlow = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: this.createCircleTexture(),
+        color: 0xffe9a8,
+        transparent: true,
+        opacity: .8,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    this.sunGlow.scale.set(90, 90, 1);
+
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
     this.stats.showPanel(-1);
@@ -213,6 +230,7 @@ export class ThreeSceneComponent implements OnInit {
     this.addListeners();
     this.resize();
     this.addObjects()
+    this.setWeather(this.mapOpts.weather)
   }
 
   initScene(){
@@ -237,13 +255,20 @@ export class ThreeSceneComponent implements OnInit {
     // Spotlight and representational mesh
     spotLightMesh1.position.copy(lightPos1);
     spotLight1.position.copy(lightPos1);
+    this.sunGlow.position.copy(lightPos1);
     scene.add(
       spotLight1,
-      spotLightMesh1
+      spotLightMesh1,
+      this.sunGlow
     );
 
-    scene.add(new THREE.AmbientLight(0xffffff, .5))
-    // scene.fog = new THREE.Fog(0xffffff, 500, 1200)
+    this.ambientLight = new THREE.AmbientLight(0xffffff, .5)
+    scene.add(this.ambientLight)
+
+    // Kept permanently attached (never swapped/nulled) so weather changes
+    // can animate its color/near/far instead of popping in and out.
+    this.fog = new THREE.Fog(0xffffff, 900, 1600)
+    scene.fog = this.fog
 
     cameraParentInner.add(camera);
     camera.lookAt(origin);
@@ -344,7 +369,8 @@ export class ThreeSceneComponent implements OnInit {
       toggleControls: true,
       rotateScene: false,
       greyScale: false,
-      isFS: false
+      isFS: false,
+      weather: 'sunny'
     }
     const changeHandler = () => { this.mapOpts.isFS = !this.mapOpts.isFS }
     document.addEventListener('fullscreenchange', changeHandler, false)
@@ -368,6 +394,166 @@ export class ThreeSceneComponent implements OnInit {
     }
   }
 
+  createCircleTexture(){
+    const size = 64
+    , canvas = document.createElement('canvas')
+    canvas.width = canvas.height = size;
+    const ctx = canvas.getContext('2d')
+    , gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
+    gradient.addColorStop(0, 'rgba(255,255,255,1)')
+    gradient.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, size, size);
+    return new THREE.CanvasTexture(canvas)
+  }
+
+  createRain(){
+    const count = 1500
+    , range = 700
+    , height = 400
+    , geometry = new THREE.BufferGeometry()
+    , positions = new Float32Array(count * 3)
+
+    for (let i = 0; i < count; i++){
+      positions[i * 3] = THREE.MathUtils.randFloatSpread(range)
+      positions[i * 3 + 1] = Math.random() * height
+      positions[i * 3 + 2] = THREE.MathUtils.randFloatSpread(range)
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+    const material = new THREE.PointsMaterial({
+      color: 0xaaccff, size: 2, transparent: true, opacity: .7,
+      map: this.createCircleTexture(), depthWrite: false
+    })
+
+    const rain = new THREE.Points(geometry, material)
+    rain.name = 'Rain'
+    rain.visible = false
+    return rain
+  }
+
+  toggleRain(on, duration = 1.5){
+    if (on && !this.rain){
+      this.rain = this.createRain()
+      this.scene.add(this.rain)
+    }
+    if (!this.rain) { return }
+
+    const { rain } = this
+    , material = rain.material as THREE.PointsMaterial
+
+    gsap.killTweensOf(material)
+
+    if (on){
+      rain.visible = true
+      gsap.to(material, { opacity: .7, duration })
+    } else {
+      gsap.to(material, {
+        opacity: 0, duration,
+        onComplete: () => { rain.visible = false }
+      })
+    }
+  }
+
+  updateRain(){
+    const { rain } = this
+    if (!rain || !rain.visible) { return }
+
+    const positions = rain.geometry.attributes.position
+    for (let i = 0; i < positions.count; i++){
+      const y = positions.getY(i) - 6
+      positions.setY(i, y < 0 ? 400 : y)
+    }
+    positions.needsUpdate = true
+  }
+
+  scheduleLightning(){
+    clearTimeout(this.lightningTimer)
+    const delay = 3000 + Math.random() * 5000
+    this.lightningTimer = setTimeout(() => {
+      this.triggerLightning()
+      this.scheduleLightning()
+    }, delay)
+  }
+
+  stopLightning(){
+    clearTimeout(this.lightningTimer)
+    this.lightningTimer = null
+  }
+
+  triggerLightning(){
+    const { ambientLight, spotLight1 } = this
+    , baseA = ambientLight.intensity
+    , baseS = spotLight1.intensity
+
+    gsap.timeline()
+      .to(ambientLight, { intensity: 3, duration: .05 })
+      .to(spotLight1, { intensity: 2.5, duration: .05 }, "<")
+      .to(ambientLight, { intensity: baseA * .6, duration: .08 })
+      .to(spotLight1, { intensity: baseS * .6, duration: .08 }, "<")
+      .to(ambientLight, { intensity: 2.5, duration: .04 })
+      .to(spotLight1, { intensity: 2, duration: .04 }, "<")
+      .to(ambientLight, { intensity: baseA, duration: .3 })
+      .to(spotLight1, { intensity: baseS, duration: .3 }, "<")
+  }
+
+  setWeather(type){
+    const { fog, ambientLight, spotLight1, sunGlow } = this
+    , duration = 1.5
+    , presets = {
+      rainy: {
+        fogColor: 0x4a5560, fogNear: 100, fogFar: 700,
+        ambColor: 0xffffff, ambIntensity: .3,
+        spotColor: 0xffffff, spotIntensity: .4,
+        rain: true, sun: false
+      },
+      foggy: {
+        fogColor: 0xb8c6cc, fogNear: 80, fogFar: 650,
+        ambColor: 0xffffff, ambIntensity: .35,
+        spotColor: 0xffffff, spotIntensity: .5,
+        rain: false, sun: false
+      },
+      sunny: {
+        fogColor: 0xffffff, fogNear: 900, fogFar: 1600,
+        ambColor: 0xfff2d9, ambIntensity: .65,
+        spotColor: 0xfff2d9, spotIntensity: 1.6,
+        rain: false, sun: true
+      }
+    }
+    , cfg = presets[type] || presets.sunny
+    , targetFogColor = new THREE.Color(cfg.fogColor)
+    , targetAmbColor = new THREE.Color(cfg.ambColor)
+    , targetSpotColor = new THREE.Color(cfg.spotColor)
+
+    this.mapOpts.weather = type
+    this.stopLightning()
+
+    gsap.killTweensOf([fog, fog.color, ambientLight, ambientLight.color, spotLight1, spotLight1.color])
+
+    gsap.timeline()
+      .to(fog, { near: cfg.fogNear, far: cfg.fogFar, duration }, 0)
+      .to(fog.color, { r: targetFogColor.r, g: targetFogColor.g, b: targetFogColor.b, duration }, 0)
+      .to(ambientLight, { intensity: cfg.ambIntensity, duration }, 0)
+      .to(ambientLight.color, { r: targetAmbColor.r, g: targetAmbColor.g, b: targetAmbColor.b, duration }, 0)
+      .to(spotLight1, { intensity: cfg.spotIntensity, duration }, 0)
+      .to(spotLight1.color, { r: targetSpotColor.r, g: targetSpotColor.g, b: targetSpotColor.b, duration }, 0)
+
+    gsap.killTweensOf(sunGlow.material)
+    if (cfg.sun){
+      sunGlow.visible = true
+      gsap.to(sunGlow.material, { opacity: .8, duration })
+    } else {
+      gsap.to(sunGlow.material, {
+        opacity: 0, duration,
+        onComplete: () => { sunGlow.visible = false }
+      })
+    }
+
+    this.toggleRain(cfg.rain, duration)
+    if (cfg.rain) { this.scheduleLightning() }
+  }
+
   navigateCamera(type, subtype){
     const { currentCamera } = this
     l(currentCamera.name)
@@ -379,13 +565,13 @@ export class ThreeSceneComponent implements OnInit {
   }
 
   calibrateCameras(type, subtype){
-    const { camera, movingCamera, origin } = this
+    const { camera, movingCamera } = this
       , targetPos = new THREE.Vector3()
       , targetRot = new THREE.Quaternion()
-      
+
     camera.getWorldPosition(targetPos)
     camera.getWorldQuaternion(targetRot)
-      
+
     const duration = .5
     gsap.timeline()
     .to(movingCamera.position, {
@@ -400,8 +586,11 @@ export class ThreeSceneComponent implements OnInit {
       y: targetRot.y,
       z: targetRot.z,
       w: targetRot.w,
+      // Renormalize only - do NOT re-target via lookAt() here, it would
+      // snap rotation toward a fixed point instead of interpolating
+      // continuously from movingCamera's actual current orientation.
       onUpdate: () => {
-        movingCamera.lookAt(origin)
+        movingCamera.quaternion.normalize()
       },
       onComplete: () => {
         this.currentCamera = camera
@@ -502,14 +691,17 @@ export class ThreeSceneComponent implements OnInit {
     try{
       stats.begin();
 
+      const delta = clock.getDelta()
+
       // monitored code goes here
       renderer.render(scene, currentCamera);
       rendererCSS.render(sceneCSS, currentCamera);
 
-      if (mixer) { mixer.update(clock.getDelta()) }
-      // if (mixer2) { mixer2.update(clock.getDelta()) }
+      if (mixer) { mixer.update(delta) }
+      // if (mixer2) { mixer2.update(delta) }
       // movingCamera.lookAt(targetObj.position)
       mapOpts.rotateScene && (cameraParentOuter.rotation.y+= .001)
+      this.updateRain()
 
       stats.end()
     } catch (err){
@@ -988,10 +1180,44 @@ export class ThreeSceneComponent implements OnInit {
     })()
   }
 
+  syncMovingCamera(){
+    const { currentCamera, movingCamera, targetObj } = this
+    if (currentCamera === movingCamera) { return }
+
+    const pos = new THREE.Vector3()
+    , quat = new THREE.Quaternion()
+
+    currentCamera.getWorldPosition(pos)
+    currentCamera.getWorldQuaternion(quat)
+
+    movingCamera.position.copy(pos)
+    movingCamera.quaternion.copy(quat)
+
+    camData.x = pos.x
+    camData.y = pos.y
+    camData.z = pos.z
+
+    // showLocation() re-derives movingCamera's rotation every frame via
+    // lookAt(targetObj.position). Point targetObj along the direction the
+    // camera is actually already facing, so that first lookAt() call doesn't
+    // snap the view toward wherever targetObj was left by the last location.
+    const facing = pos.clone()
+      .add(new THREE.Vector3(0, 0, -100).applyQuaternion(quat))
+
+    targetObj.position.copy(facing)
+    posData.x = facing.x
+    posData.y = facing.y
+    posData.z = facing.z
+  }
+
   showLocation(){
     // l(location, "From service")
     const { location, movingCamera, targetObj } = this
-    
+
+    // Sync moving camera to wherever the active camera currently is,
+    // so switching to it below doesn't pop to a stale position.
+    this.syncMovingCamera()
+
     // Use the separate camera.
     this.mapOpts.rotateScene = false
     this.currentCamera = this.movingCamera
