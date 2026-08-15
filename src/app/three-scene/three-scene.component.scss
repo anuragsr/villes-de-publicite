@@ -67,7 +67,7 @@
     .buttons button{
       margin: 0 5px;
       &.active{ box-shadow: 0 0 0 2px $w; }
-      &.btn-sunny{ background: #f4b942; color: #3a2b00; }
+      &.btn-sunny{ background: #ef6c1e; color: $w; }
       &.btn-rainy{ background: #3d7dd6; color: $w; }
       &.btn-foggy{ background: #8a9aa5; color: $w; }
     }

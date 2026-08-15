@@ -367,10 +367,10 @@ export class ThreeSceneComponent implements OnInit {
     this.controls = new OrbitControls(this.orbitCamera, this.renderer.domElement)
     this.mapOpts = {
       toggleControls: true,
-      rotateScene: false,
+      rotateScene: true,
       greyScale: false,
       isFS: false,
-      weather: 'sunny'
+      weather: 'rainy'
     }
     const changeHandler = () => { this.mapOpts.isFS = !this.mapOpts.isFS }
     document.addEventListener('fullscreenchange', changeHandler, false)

@@ -38,8 +38,8 @@
       button{
         // position: relative;
         // top: 1vw;
-        opacity: 0;
-        transform: scale(0);
+        opacity: .5;
+        transform: scale(1);
         transition: all .25s ease-out;
         // &:last-of-type{
         //   margin-left: 25px;
